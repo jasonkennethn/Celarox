@@ -1,0 +1,32 @@
+# User requested exclusion
+VERCEL_ENV.txt
+
+# OS files
+.DS_Store
+
+# Frontend dependencies and build files
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/
+frontend/*.tsbuildinfo
+
+# Backend dependencies and environment files
+backend/env/
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.Python
+backend/*.so
+backend/*.egg-info/
+backend/dist/
+backend/build/
+backend/db.sqlite3
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
