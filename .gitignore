@@ -11,6 +11,8 @@ frontend/out/
 frontend/build/
 frontend/.vercel/
 frontend/*.tsbuildinfo
+frontend/.open-next/
+frontend/.wrangler/
 
 # Backend dependencies and environment files
 backend/env/
