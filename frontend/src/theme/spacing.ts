@@ -15,6 +15,7 @@ export const spacing = {
 
 export const radii = {
   none: 0,
+  xs: 4,
   sm: 6,
   md: 10,
   lg: 14,
@@ -25,24 +26,31 @@ export const radii = {
 
 export const shadows = {
   subtle: {
-    shadowColor: '#000',
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  card: {
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.06,
     shadowRadius: 8,
     elevation: 2,
   },
-  card: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
+  elevated: {
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 18,
     elevation: 4,
   },
   glow: {
-    shadowColor: '#6366F1',
+    shadowColor: '#2563EB',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 20,
-    elevation: 6,
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
+    elevation: 3,
   },
 };

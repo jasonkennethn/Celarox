@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Platform,
   ScrollView,
 } from 'react-native';
 import { X } from 'lucide-react-native';
@@ -46,8 +45,8 @@ export const Modal: React.FC<ModalProps> = ({
                   <Text style={styles.title}>{title}</Text>
                   {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                 </View>
-                <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-                  <X size={20} color={colors.textSecondary} />
+                <TouchableOpacity onPress={onClose} style={styles.closeBtn} activeOpacity={0.7}>
+                  <X size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
               </View>
 
@@ -70,30 +69,31 @@ export const Modal: React.FC<ModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(5, 7, 12, 0.85)',
+    backgroundColor: 'rgba(15, 23, 42, 0.45)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.base,
   },
   dialog: {
     width: '100%',
-    backgroundColor: colors.card,
+    backgroundColor: '#FFFFFF',
     borderRadius: radii['2xl'],
     borderWidth: 1,
-    borderColor: colors.cardBorder,
+    borderColor: colors.border,
     maxHeight: '90%',
     overflow: 'hidden',
-    ...shadows.card,
+    ...shadows.elevated,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.xl,
-    paddingTop: spacing.xl,
+    paddingTop: spacing.lg,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.divider,
+    borderBottomColor: colors.border,
+    backgroundColor: '#FFFFFF',
   },
   headerText: {
     flex: 1,
@@ -104,19 +104,21 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.lg,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
+    letterSpacing: -0.3,
   },
   subtitle: {
-    color: colors.textSecondary,
+    color: colors.textTertiary,
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
     marginTop: 2,
   },
   closeBtn: {
     padding: spacing.xs,
-    borderRadius: radii.sm,
-    backgroundColor: colors.backgroundSecondary,
+    borderRadius: radii.md,
+    backgroundColor: colors.backgroundTertiary,
   },
   body: {
     padding: spacing.xl,
+    backgroundColor: '#FFFFFF',
   },
 });

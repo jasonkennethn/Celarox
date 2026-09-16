@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ViewStyle,
   TextStyle,
-  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors, radii, spacing, typography, shadows } from '../../theme';
@@ -58,15 +57,16 @@ export const Button: React.FC<ButtonProps> = ({
       case 'sm':
         return { paddingVertical: 6, paddingHorizontal: 12, borderRadius: radii.md };
       case 'lg':
-        return { paddingVertical: 14, paddingHorizontal: 28, borderRadius: radii.xl };
+        return { paddingVertical: 13, paddingHorizontal: 26, borderRadius: radii.xl };
       default:
-        return { paddingVertical: 10, paddingHorizontal: 20, borderRadius: radii.lg };
+        return { paddingVertical: 9, paddingHorizontal: 18, borderRadius: radii.lg };
     }
   };
 
   const getTextStyle = (): TextStyle => {
     switch (variant) {
       case 'ghost':
+        return { color: colors.textSecondary };
       case 'outline':
       case 'secondary':
         return { color: colors.textPrimary };
@@ -97,7 +97,7 @@ export const Button: React.FC<ButtonProps> = ({
         style={[styles.base, style, disabled && styles.disabled]}
       >
         <LinearGradient
-          colors={['#6366F1', '#4F46E5']}
+          colors={['#2563EB', '#1D4ED8']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={[styles.gradientContent, getPaddingStyle()]}
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: radii.lg,
     overflow: 'hidden',
   },
   gradientContent: {
@@ -182,12 +183,13 @@ const styles = StyleSheet.create({
   },
   primary: {
     backgroundColor: colors.primary,
-    ...shadows.glow,
+    ...shadows.subtle,
   },
   secondary: {
-    backgroundColor: colors.cardHover,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: colors.border,
+    ...shadows.subtle,
   },
   ghost: {
     backgroundColor: 'transparent',

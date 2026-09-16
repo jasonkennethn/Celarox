@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { View, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TrendingUp, TrendingDown } from 'lucide-react-native';
-import { colors, radii, spacing, typography, shadows } from '../../theme';
+import { colors, radii, spacing, typography } from '../../theme';
 import { Card } from './Card';
 
 interface MetricCardProps {
@@ -39,7 +39,10 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           <View
             style={[
               styles.changeBadge,
-              { backgroundColor: isPositive ? colors.successLight : colors.dangerLight },
+              {
+                backgroundColor: isPositive ? colors.successBg : colors.dangerBg,
+                borderColor: isPositive ? 'rgba(5, 150, 105, 0.2)' : 'rgba(220, 38, 38, 0.2)',
+              },
             ]}
           >
             {isPositive ? (
@@ -68,26 +71,26 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     minWidth: 200,
+    backgroundColor: '#FFFFFF',
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.sm,
+    marginBottom: spacing.xs,
   },
   title: {
-    color: colors.textSecondary,
+    color: colors.textTertiary,
     fontSize: typography.sizes.xs,
     fontWeight: typography.weights.semibold,
     fontFamily: typography.fontFamily,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   iconWrapper: {
     width: 32,
     height: 32,
     borderRadius: radii.md,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: colors.backgroundTertiary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -97,6 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
     marginVertical: spacing.xs,
+    letterSpacing: -0.5,
   },
   bottomRow: {
     flexDirection: 'row',
@@ -109,17 +113,18 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 6,
     borderRadius: radii.sm,
+    borderWidth: 1,
     marginRight: spacing.sm,
   },
   changeText: {
-    fontSize: typography.sizes.xs,
+    fontSize: 11,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
     marginLeft: 3,
   },
   periodText: {
     color: colors.textTertiary,
-    fontSize: typography.sizes.xs,
+    fontSize: 11,
     fontFamily: typography.fontFamily,
   },
 });

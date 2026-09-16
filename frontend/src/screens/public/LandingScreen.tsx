@@ -6,11 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
   useWindowDimensions,
-  TextInput,
-  Platform,
+  Image,
 } from 'react-native';
 import {
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   Zap,
@@ -29,6 +27,7 @@ import {
   Globe,
   Star,
   ChevronRight,
+  ChevronDown,
 } from 'lucide-react-native';
 import { colors, radii, spacing, typography, shadows } from '../../theme';
 import { Button, Card, Badge, Input, CurrencyModal } from '../../components/common';
@@ -103,63 +102,67 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
     {
       icon: Users,
       title: 'CRM & Pipeline Hub',
-      desc: 'Multi-stage visual deal pipelines, account tracking, and client interaction history.',
-      color: '#6366F1',
+      desc: 'Multi-stage visual deal pipelines, account tracking, and customer interaction telemetry.',
+      color: colors.primary,
     },
     {
       icon: FolderKanban,
       title: 'Operations & Projects',
-      desc: 'Agile Kanban boards, sprint task tracking, subtask checklists, and time logging.',
-      color: '#06B6D4',
+      desc: 'Agile Kanban boards, sprint task tracking, subtask checklists, and deliverable workflows.',
+      color: '#0284C7',
     },
     {
       icon: Receipt,
       title: 'Finance & Invoicing',
       desc: 'Instant Apple-grade PDF invoices, itemized tax/discounts, payments, and expense tracking.',
-      color: '#10B981',
+      color: colors.success,
     },
     {
       icon: FileText,
       title: 'Document Cloud',
-      desc: 'High-speed asset storage via Cloudinary and Google Drive integration.',
-      color: '#8B5CF6',
+      desc: 'High-speed encrypted asset storage via Cloudinary and Google Drive integration.',
+      color: '#7C3AED',
     },
     {
       icon: Zap,
       title: 'Workflow Engine',
-      desc: 'Autonomous event triggers for deal updates, invoice payment dispatches, and tasks.',
-      color: '#F59E0B',
+      desc: 'Autonomous event triggers for deal milestones, invoice dispatches, and notification rules.',
+      color: colors.warning,
     },
     {
       icon: Briefcase,
       title: 'HR & Team Hub',
-      desc: 'Department directory, employee profiles, leave request approval flows, and notices.',
-      color: '#EC4899',
+      desc: 'Department directory, employee profiles, leave request approvals, and corporate notices.',
+      color: '#DB2777',
     },
     {
       icon: HelpCircle,
       title: 'Forms & Support Desk',
-      desc: 'Custom drag-and-drop dynamic forms with threaded customer support tickets.',
-      color: '#3B82F6',
+      desc: 'Custom dynamic web forms with threaded customer support ticket management.',
+      color: colors.primary,
     },
     {
       icon: BarChart3,
       title: 'Executive Intelligence',
-      desc: 'Real-time MRR analytics, project velocities, financial run rates, and team capacity.',
-      color: '#14B8A6',
+      desc: 'Real-time MRR analytics, project velocities, financial run rates, and capacity models.',
+      color: '#0D9488',
     },
   ];
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Navigation Header */}
+    <View style={styles.outerContainer}>
+      {/* LOCKED TOP NAVIGATION BAR */}
       <View style={styles.navBar}>
         <View style={styles.brandRow}>
-          <View style={styles.logoBadge}>
-            <Sparkles size={20} color="#FFFFFF" />
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+          <View style={styles.brandInfo}>
+            <Text style={styles.brandTitle}>CELAROX</Text>
+            <Text style={styles.brandTag}>ENTERPRISE</Text>
           </View>
-          <Text style={styles.brandTitle}>Celarox</Text>
-          <Text style={styles.brandTag}>ENTERPRISE</Text>
         </View>
 
         <View style={styles.navActions}>
@@ -167,7 +170,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
           <TouchableOpacity
             onPress={() => setCurrencyModalOpen(true)}
             style={styles.currencyTopBtn}
-            activeOpacity={0.7}
+            activeOpacity={0.75}
           >
             <Text style={styles.currencyTopFlag}>{currentCurrency.flag}</Text>
             <Text style={styles.currencyTopCode}>{currentCurrency.code}</Text>
@@ -177,11 +180,15 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
                 <Text style={styles.currencyAutoTagText}>AUTO</Text>
               </View>
             )}
+            <ChevronDown size={12} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => onGoToAuth('login')} style={styles.navLink}>
-            <Text style={styles.navLinkText}>Sign In</Text>
-          </TouchableOpacity>
+          {!isTablet && width >= 500 && (
+            <TouchableOpacity onPress={() => onGoToAuth('login')} style={styles.navLink}>
+              <Text style={styles.navLinkText}>Sign In</Text>
+            </TouchableOpacity>
+          )}
+
           <Button
             title="Launch Free Trial"
             onPress={() => onGoToAuth('register')}
@@ -191,439 +198,556 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
         </View>
       </View>
 
-      {/* Hero Section */}
-      <View style={styles.heroSection}>
-        <Badge
-          label="Unified Enterprise Operating System • 2026 Edition"
-          variant="primary"
-          style={styles.heroBadge}
-        />
-
-        <Text style={[styles.heroTitle, isDesktop ? styles.heroTitleLg : styles.heroTitleSm]}>
-          The Operating System for Modern High-Growth Business
-        </Text>
-
-        <Text style={styles.heroSubtitle}>
-          Centralize your CRM pipelines, operational projects, automated invoicing, secure document
-          clouds, HR teams, and customer support desk in one unified, Apple-grade interface.
-        </Text>
-
-        <View style={styles.heroCtaRow}>
-          <Button
-            title="Get Started Instantly"
-            onPress={() => onGoToAuth('register')}
-            size="lg"
+      {/* BOUNDED SCROLLABLE CONTENT */}
+      <ScrollView
+        style={styles.scrollBody}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Hero Section */}
+        <View style={styles.heroSection}>
+          <Badge
+            label="Unified Enterprise Operating System • 2026 Edition"
             variant="primary"
-            icon={<ArrowRight size={18} color="#FFFFFF" />}
-            iconPosition="right"
+            style={styles.heroBadge}
           />
-          <Button
-            title="Access Workspace"
-            onPress={() => onGoToAuth('login')}
-            size="lg"
-            variant="secondary"
-            style={{ marginLeft: isDesktop ? spacing.md : 0, marginTop: isDesktop ? 0 : spacing.sm }}
-          />
-        </View>
+          <Text style={[styles.heroTitle, isDesktop ? styles.heroTitleLg : styles.heroTitleSm]}>
+            One Platform to Run Every Enterprise Workflow
+          </Text>
+          <Text style={styles.heroSubtitle}>
+            Celarox replaces fragmented point solutions with an integrated operating system for CRM,
+            Operations, Finance, Cloud Documents, HR, Support, and Autonomous Workflows.
+          </Text>
 
-        {/* Security & Reliability Badges */}
-        <View style={styles.trustBadges}>
-          <View style={styles.trustItem}>
-            <ShieldCheck size={16} color={colors.success} />
-            <Text style={styles.trustText}>Neon DB Serverless SSL</Text>
+          <View style={styles.heroCtaRow}>
+            <Button
+              title="Start 14-Day Free Trial"
+              onPress={() => onGoToAuth('register')}
+              size="lg"
+              variant="primary"
+              icon={<ArrowRight size={18} color="#FFFFFF" />}
+              iconPosition="right"
+              style={{ marginRight: isDesktop ? spacing.md : 0, marginBottom: spacing.sm }}
+            />
+            <Button
+              title="Sign In to Workspace"
+              onPress={() => onGoToAuth('login')}
+              size="lg"
+              variant="secondary"
+              icon={<Lock size={16} color={colors.textPrimary} />}
+              style={{ marginBottom: spacing.sm }}
+            />
           </View>
-          <View style={styles.trustItem}>
-            <Lock size={16} color={colors.primary} />
-            <Text style={styles.trustText}>End-to-End JWT Auth</Text>
-          </View>
-          <View style={styles.trustItem}>
-            <Globe size={16} color={colors.accentCyan} />
-            <Text style={styles.trustText}>Multi-Tenant Architecture</Text>
-          </View>
-        </View>
-      </View>
 
-      {/* Interactive App Preview Showcase */}
-      <View style={styles.showcaseSection}>
-        <View style={styles.tabBar}>
-          <TouchableOpacity
-            onPress={() => setActiveTab('crm')}
-            style={[styles.tabButton, activeTab === 'crm' && styles.tabButtonActive]}
-          >
-            <Users size={16} color={activeTab === 'crm' ? colors.primary : colors.textSecondary} />
-            <Text style={[styles.tabText, activeTab === 'crm' && styles.tabTextActive]}>CRM Pipeline</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setActiveTab('finance')}
-            style={[styles.tabButton, activeTab === 'finance' && styles.tabButtonActive]}
-          >
-            <Receipt size={16} color={activeTab === 'finance' ? colors.success : colors.textSecondary} />
-            <Text style={[styles.tabText, activeTab === 'finance' && styles.tabTextActive]}>Invoicing Studio</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setActiveTab('projects')}
-            style={[styles.tabButton, activeTab === 'projects' && styles.tabButtonActive]}
-          >
-            <FolderKanban size={16} color={activeTab === 'projects' ? colors.accentCyan : colors.textSecondary} />
-            <Text style={[styles.tabText, activeTab === 'projects' && styles.tabTextActive]}>Operations</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setActiveTab('workflows')}
-            style={[styles.tabButton, activeTab === 'workflows' && styles.tabButtonActive]}
-          >
-            <Zap size={16} color={activeTab === 'workflows' ? colors.warning : colors.textSecondary} />
-            <Text style={[styles.tabText, activeTab === 'workflows' && styles.tabTextActive]}>Automations</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Card style={styles.previewCard} padding="xl">
-          {activeTab === 'crm' && (
-            <View>
-              <View style={styles.previewHeader}>
-                <Text style={styles.previewTitle}>Executive Deal Pipeline</Text>
-                <Badge label={`Total Pipeline: ${formatAmount(485000)}`} variant="success" />
-              </View>
-              <View style={[styles.stageGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-                <View style={styles.stageColumn}>
-                  <Text style={styles.stageTitle}>QUALIFIED (4)</Text>
-                  <View style={styles.stageCard}>
-                    <Text style={styles.stageCardTitle}>Acme Global Enterprise</Text>
-                    <Text style={styles.stageCardValue}>{formatAmount(120000)} • 80% Prob</Text>
-                  </View>
-                  <View style={styles.stageCard}>
-                    <Text style={styles.stageCardTitle}>Starlight Robotics</Text>
-                    <Text style={styles.stageCardValue}>{formatAmount(65000)} • 70% Prob</Text>
-                  </View>
-                </View>
-                <View style={styles.stageColumn}>
-                  <Text style={styles.stageTitle}>PROPOSAL SENT (3)</Text>
-                  <View style={styles.stageCard}>
-                    <Text style={styles.stageCardTitle}>Apex FinTech Core</Text>
-                    <Text style={styles.stageCardValue}>{formatAmount(210000)} • 90% Prob</Text>
-                  </View>
-                </View>
-                <View style={styles.stageColumn}>
-                  <Text style={styles.stageTitle}>CLOSED WON (8)</Text>
-                  <View style={[styles.stageCard, { borderColor: 'rgba(16, 185, 129, 0.3)' }]}>
-                    <Text style={styles.stageCardTitle}>Helios Dynamics</Text>
-                    <Text style={[styles.stageCardValue, { color: colors.success }]}>{formatAmount(90000)} • Paid</Text>
-                  </View>
-                </View>
-              </View>
+          {/* Trust Badges */}
+          <View style={styles.trustBadges}>
+            <View style={styles.trustItem}>
+              <ShieldCheck size={16} color={colors.success} />
+              <Text style={styles.trustText}>Neon DB PostgreSQL (SSL)</Text>
             </View>
-          )}
-
-          {activeTab === 'finance' && (
-            <View>
-              <View style={styles.previewHeader}>
-                <Text style={styles.previewTitle}>Apple-Grade PDF Invoicing Engine</Text>
-                <Badge label="Status: Ready to Dispatch" variant="info" />
-              </View>
-              <View style={styles.invoiceDemoBox}>
-                <View style={styles.invoiceDemoRow}>
-                  <Text style={styles.invoiceDemoLabel}>Invoice #:</Text>
-                  <Text style={styles.invoiceDemoValue}>INV-2026-0842</Text>
-                </View>
-                <View style={styles.invoiceDemoRow}>
-                  <Text style={styles.invoiceDemoLabel}>Client:</Text>
-                  <Text style={styles.invoiceDemoValue}>Vertex Autonomous Corp</Text>
-                </View>
-                <View style={styles.invoiceDemoRow}>
-                  <Text style={styles.invoiceDemoLabel}>Total Due:</Text>
-                  <Text style={[styles.invoiceDemoValue, { color: colors.success, fontWeight: '700' }]}>{formatAmount(48500)}</Text>
-                </View>
-              </View>
+            <View style={styles.trustItem}>
+              <CheckCircle2 size={16} color={colors.primary} />
+              <Text style={styles.trustText}>Brevo Transactional SMTP</Text>
             </View>
-          )}
+            <View style={styles.trustItem}>
+              <CheckCircle2 size={16} color={colors.primary} />
+              <Text style={styles.trustText}>Cloudinary & Google Drive Cloud</Text>
+            </View>
+          </View>
+        </View>
 
-          {activeTab === 'projects' && (
-            <View>
-              <View style={styles.previewHeader}>
-                <Text style={styles.previewTitle}>Real-Time Task Kanban & Sprints</Text>
-                <Badge label="Active Sprint: Q3 Scale" variant="primary" />
+        {/* Interactive Feature Demo Showcase */}
+        <View style={styles.showcaseSection}>
+          <View style={styles.tabBar}>
+            {(
+              [
+                { id: 'crm', label: 'CRM & Pipeline', icon: Users },
+                { id: 'finance', label: 'Finance & Invoicing', icon: Receipt },
+                { id: 'projects', label: 'Sprint Kanban', icon: FolderKanban },
+                { id: 'workflows', label: 'Automations', icon: Zap },
+              ] as const
+            ).map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <TouchableOpacity
+                  key={tab.id}
+                  onPress={() => setActiveTab(tab.id)}
+                  style={[styles.tabButton, isActive && styles.tabButtonActive]}
+                  activeOpacity={0.8}
+                >
+                  <Icon size={16} color={isActive ? colors.primary : colors.textTertiary} />
+                  <Text style={[styles.tabText, isActive && styles.tabTextActive]}>
+                    {tab.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          {/* Showcase Preview Box */}
+          <Card style={styles.previewCard} padding="xl">
+            {activeTab === 'crm' && (
+              <View>
+                <View style={styles.previewHeader}>
+                  <View>
+                    <Text style={styles.previewTitle}>Multi-Stage Enterprise Deal Flow</Text>
+                    <Text style={styles.previewDesc}>
+                      Visual Kanban stages with automatic win probability weighting and revenue forecasting.
+                    </Text>
+                  </View>
+                  <Badge label="Live Pipeline Preview" variant="success" dot />
+                </View>
+
+                <View style={[styles.stageGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
+                  <View style={styles.stageColumn}>
+                    <Text style={styles.stageTitle}>QUALIFIED LEADS (3)</Text>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>Starlight Robotics Global</Text>
+                      <Text style={styles.stageCardValue}>{formatAmount(65000)} • 60% prob</Text>
+                    </View>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>Apex Financial Core</Text>
+                      <Text style={styles.stageCardValue}>{formatAmount(140000)} • 50% prob</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.stageColumn}>
+                    <Text style={styles.stageTitle}>PROPOSAL SENT (2)</Text>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>Acme Cloud Migration</Text>
+                      <Text style={styles.stageCardValue}>{formatAmount(120000)} • 80% prob</Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.stageColumn}>
+                    <Text style={styles.stageTitle}>CLOSED WON (5)</Text>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>Vanguard BioTech ERP</Text>
+                      <Text style={styles.stageCardValue}>{formatAmount(280000)} • 100% Won</Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-              <Text style={styles.previewDesc}>
-                Track tasks, assignees, priorities, subtask progress, and time logs across all projects with zero friction.
+            )}
+
+            {activeTab === 'finance' && (
+              <View>
+                <View style={styles.previewHeader}>
+                  <View>
+                    <Text style={styles.previewTitle}>Apple-Caliber Invoicing & Billing</Text>
+                    <Text style={styles.previewDesc}>
+                      Itemized PDF invoices, payment tracking, and automated email dispatches via Brevo API.
+                    </Text>
+                  </View>
+                  <Badge label="Automated Billing" variant="primary" />
+                </View>
+
+                <View style={styles.invoiceDemoBox}>
+                  <View style={styles.invoiceDemoRow}>
+                    <Text style={styles.invoiceDemoLabel}>Invoice #</Text>
+                    <Text style={styles.invoiceDemoValue}>INV-2026-0042</Text>
+                  </View>
+                  <View style={styles.invoiceDemoRow}>
+                    <Text style={styles.invoiceDemoLabel}>Client</Text>
+                    <Text style={styles.invoiceDemoValue}>Acme Global Technologies Inc.</Text>
+                  </View>
+                  <View style={styles.invoiceDemoRow}>
+                    <Text style={styles.invoiceDemoLabel}>Line Items (3)</Text>
+                    <Text style={styles.invoiceDemoValue}>Platform License, SRE Cluster, SLA Support</Text>
+                  </View>
+                  <View style={[styles.invoiceDemoRow, { borderTopWidth: 1, borderTopColor: colors.border, marginTop: 8, paddingTop: 8 }]}>
+                    <Text style={[styles.invoiceDemoLabel, { fontWeight: '700', color: colors.textPrimary }]}>Total Amount</Text>
+                    <Text style={[styles.invoiceDemoValue, { fontWeight: '700', color: colors.success }]}>
+                      {formatAmount(24500)}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+
+            {activeTab === 'projects' && (
+              <View>
+                <View style={styles.previewHeader}>
+                  <View>
+                    <Text style={styles.previewTitle}>Agile Sprint Operations & Kanban</Text>
+                    <Text style={styles.previewDesc}>
+                      Task allocation, priority matrices, subtask checklists, and time tracking.
+                    </Text>
+                  </View>
+                  <Badge label="Sprint Active" variant="primary" />
+                </View>
+
+                <View style={[styles.stageGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
+                  <View style={styles.stageColumn}>
+                    <Text style={styles.stageTitle}>IN PROGRESS (4)</Text>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>High-Throughput Neon DB Sharding</Text>
+                      <Badge label="Urgent" variant="danger" size="sm" style={{ marginTop: 4 }} />
+                    </View>
+                  </View>
+
+                  <View style={styles.stageColumn}>
+                    <Text style={styles.stageTitle}>IN REVIEW (2)</Text>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>Cloudinary Enterprise Asset Webhooks</Text>
+                      <Badge label="High" variant="warning" size="sm" style={{ marginTop: 4 }} />
+                    </View>
+                  </View>
+
+                  <View style={styles.stageColumn}>
+                    <Text style={styles.stageTitle}>DONE (18)</Text>
+                    <View style={styles.stageCard}>
+                      <Text style={styles.stageCardTitle}>Brevo Transactional SMTP Dispatcher</Text>
+                      <Badge label="Completed" variant="success" size="sm" style={{ marginTop: 4 }} />
+                    </View>
+                  </View>
+                </View>
+              </View>
+            )}
+
+            {activeTab === 'workflows' && (
+              <View>
+                <View style={styles.previewHeader}>
+                  <View>
+                    <Text style={styles.previewTitle}>Autonomous Event-Driven Automation Engine</Text>
+                    <Text style={styles.previewDesc}>
+                      Triggers on CRM deal victories, automatically generates invoices, and dispatches team notifications.
+                    </Text>
+                  </View>
+                  <Badge label="Autonomous Engine" variant="success" dot />
+                </View>
+
+                <View style={styles.workflowDemoBox}>
+                  <View style={styles.workflowStep}>
+                    <View style={styles.workflowDot} />
+                    <Text style={styles.workflowStepTitle}>Trigger: Deal Stage changes to "Closed Won"</Text>
+                    <Text style={styles.workflowStepDesc}>Monitors all high-value opportunity closures</Text>
+                  </View>
+                  <View style={styles.workflowConnector} />
+                  <View style={styles.workflowStep}>
+                    <View style={[styles.workflowDot, { backgroundColor: colors.primary }]} />
+                    <Text style={styles.workflowStepTitle}>Action 1: Generate PDF Invoice & Dispatch via Brevo</Text>
+                    <Text style={styles.workflowStepDesc}>Sends structured billing document to client finance email</Text>
+                  </View>
+                  <View style={styles.workflowConnector} />
+                  <View style={styles.workflowStep}>
+                    <View style={[styles.workflowDot, { backgroundColor: colors.success }]} />
+                    <Text style={styles.workflowStepTitle}>Action 2: Provision Cloud Folder & Notify Executive Team</Text>
+                    <Text style={styles.workflowStepDesc}>Creates dedicated Google Drive & Cloudinary tenant directories</Text>
+                  </View>
+                </View>
+              </View>
+            )}
+          </Card>
+        </View>
+
+        {/* 8 Enterprise Application Suites Grid */}
+        <View style={styles.gridSection}>
+          <Text style={styles.sectionHeading}>Everything Your Enterprise Needs</Text>
+          <Text style={styles.sectionSubheading}>
+            Eight integrated operational suites built on a unified Postgres database with multi-tenant isolation.
+          </Text>
+
+          <View style={styles.cardsGrid}>
+            {apps.map((app, idx) => {
+              const Icon = app.icon;
+              return (
+                <View
+                  key={idx}
+                  style={[
+                    styles.appCardWrapper,
+                    { width: isDesktop ? '23.5%' : isTablet ? '48%' : '100%' },
+                  ]}
+                >
+                  <Card style={styles.appCard} padding="lg">
+                    <View style={[styles.appIconBox, { backgroundColor: `${app.color}14` }]}>
+                      <Icon size={22} color={app.color} />
+                    </View>
+                    <Text style={styles.appCardTitle}>{app.title}</Text>
+                    <Text style={styles.appCardDesc}>{app.desc}</Text>
+                  </Card>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Transparent Enterprise Pricing */}
+        <View style={styles.pricingSection}>
+          <Text style={styles.sectionHeading}>Transparent, Predictable Pricing</Text>
+          <Text style={styles.sectionSubheading}>
+            All plans include SSL database encryption, multi-tenant isolation, and Brevo email integration.
+          </Text>
+
+          <View style={[styles.pricingRow, { flexDirection: isDesktop ? 'row' : 'column' }]}>
+            {/* Starter */}
+            <Card style={styles.pricingCard} padding="xl">
+              <Text style={styles.planName}>Starter</Text>
+              <Text style={styles.planPrice}>
+                {formatAmount(49, { showDecimals: false })}
+                <Text style={styles.planPeriod}> / month</Text>
               </Text>
-            </View>
-          )}
-
-          {activeTab === 'workflows' && (
-            <View>
-              <View style={styles.previewHeader}>
-                <Text style={styles.previewTitle}>Autonomous Event-Driven Workflow Builder</Text>
-                <Badge label="Engine: Live & Active" variant="warning" />
+              <Text style={styles.planDesc}>Ideal for growing startups and agile teams.</Text>
+              <View style={styles.planFeatures}>
+                <Text style={styles.planFeatureItem}>✓ Up to 5 Team Members</Text>
+                <Text style={styles.planFeatureItem}>✓ Full CRM & Projects Hub</Text>
+                <Text style={styles.planFeatureItem}>✓ Invoice Generation (50/mo)</Text>
+                <Text style={styles.planFeatureItem}>✓ 10GB Cloud Storage</Text>
               </View>
-              <Text style={styles.previewDesc}>
-                Trigger automated Brevo transactional emails, create follow-up tasks, and update deal stages when domain events fire.
+              <Button
+                title="Get Starter"
+                onPress={() => onGoToAuth('register')}
+                variant="secondary"
+              />
+            </Card>
+
+            {/* Growth */}
+            <Card style={[styles.pricingCard, styles.pricingCardFeatured]} padding="xl">
+              <Badge label="MOST POPULAR" variant="primary" style={{ marginBottom: spacing.sm }} />
+              <Text style={styles.planName}>Growth</Text>
+              <Text style={styles.planPrice}>
+                {formatAmount(149, { showDecimals: false })}
+                <Text style={styles.planPeriod}> / month</Text>
               </Text>
-            </View>
-          )}
-        </Card>
-      </View>
+              <Text style={styles.planDesc}>For scaling enterprises with custom automation needs.</Text>
+              <View style={styles.planFeatures}>
+                <Text style={styles.planFeatureItem}>✓ Up to 25 Team Members</Text>
+                <Text style={styles.planFeatureItem}>✓ Unlimited CRM & Invoices</Text>
+                <Text style={styles.planFeatureItem}>✓ Autonomous Workflow Builder</Text>
+                <Text style={styles.planFeatureItem}>✓ HR & Support Ticket Desk</Text>
+                <Text style={styles.planFeatureItem}>✓ 100GB Cloud Storage</Text>
+              </View>
+              <Button
+                title="Start 14-Day Free Trial"
+                onPress={() => onGoToAuth('register')}
+                variant="primary"
+              />
+            </Card>
 
-      {/* 9 Interconnected Enterprise Apps Grid */}
-      <View style={styles.gridSection}>
-        <Text style={styles.sectionHeading}>Everything You Need to Scale Your Enterprise</Text>
-        <Text style={styles.sectionSubheading}>
-          No more duct-taping ten disconnected subscriptions. One integrated workspace for your entire company.
-        </Text>
+            {/* Enterprise */}
+            <Card style={styles.pricingCard} padding="xl">
+              <Text style={styles.planName}>Enterprise</Text>
+              <Text style={styles.planPrice}>
+                {formatAmount(399, { showDecimals: false })}
+                <Text style={styles.planPeriod}> / month</Text>
+              </Text>
+              <Text style={styles.planDesc}>Dedicated infrastructure and bespoke integrations.</Text>
+              <View style={styles.planFeatures}>
+                <Text style={styles.planFeatureItem}>✓ Unlimited Team Members</Text>
+                <Text style={styles.planFeatureItem}>✓ Multi-Tenant Isolation</Text>
+                <Text style={styles.planFeatureItem}>✓ 99.99% SLA Guarantee</Text>
+                <Text style={styles.planFeatureItem}>✓ Dedicated 24/7 Account Manager</Text>
+                <Text style={styles.planFeatureItem}>✓ 1TB High-Speed Cloud</Text>
+              </View>
+              <Button
+                title="Contact Sales"
+                onPress={() => onGoToAuth('register')}
+                variant="secondary"
+              />
+            </Card>
+          </View>
+        </View>
 
-        <View style={styles.cardsGrid}>
-          {apps.map((app, idx) => {
-            const Icon = app.icon;
-            return (
+        {/* Public Contact & Inquiry Section */}
+        <View style={styles.contactSection}>
+          <Card style={styles.contactCard} padding="xl">
+            <View style={[styles.contactRow, { flexDirection: isDesktop ? 'row' : 'column' }]}>
               <View
-                key={idx}
                 style={[
-                  styles.appCardWrapper,
-                  { width: isDesktop ? '31%' : isTablet ? '47%' : '100%' },
+                  styles.contactInfo,
+                  {
+                    marginRight: isDesktop ? spacing['2xl'] : 0,
+                    marginBottom: isDesktop ? 0 : spacing.xl,
+                  },
                 ]}
               >
-                <Card style={styles.appCard} padding="lg">
-                  <View style={[styles.appIconBox, { backgroundColor: `${app.color}20` }]}>
-                    <Icon size={22} color={app.color} />
+                <Badge
+                  label="DIRECT EXECUTIVE INQUIRIES"
+                  variant="primary"
+                  style={{ marginBottom: spacing.sm }}
+                />
+                <Text style={styles.contactTitle}>Connect with Our Executive Team</Text>
+                <Text style={styles.contactDesc}>
+                  Have specific technical requirements, custom integration requests, or enterprise SLA inquiries?
+                  Submit your inquiry and our team will get back to you promptly.
+                </Text>
+
+                <View style={styles.contactDetails}>
+                  <View style={styles.contactDetailRow}>
+                    <Mail size={16} color={colors.primary} />
+                    <Text style={styles.contactDetailText}>Direct: hello@celarox.com</Text>
                   </View>
-                  <Text style={styles.appCardTitle}>{app.title}</Text>
-                  <Text style={styles.appCardDesc}>{app.desc}</Text>
-                </Card>
-              </View>
-            );
-          })}
-        </View>
-      </View>
-
-      {/* Pricing Matrix */}
-      <View style={styles.pricingSection}>
-        <Text style={styles.sectionHeading}>Transparent, Predictable Enterprise Pricing</Text>
-        <Text style={styles.sectionSubheading}>Choose the right plan to launch and scale your operations.</Text>
-
-        <View style={[styles.pricingRow, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-          {/* Starter */}
-          <Card style={styles.pricingCard} padding="xl">
-            <Text style={styles.planName}>Starter</Text>
-            <Text style={styles.planPrice}>{formatAmount(49, { showDecimals: false })}<Text style={styles.planPeriod}> / month</Text></Text>
-            <Text style={styles.planDesc}>Ideal for growing startups and agile teams.</Text>
-            <View style={styles.planFeatures}>
-              <Text style={styles.planFeatureItem}>✓ Up to 5 Team Members</Text>
-              <Text style={styles.planFeatureItem}>✓ Full CRM & Projects Hub</Text>
-              <Text style={styles.planFeatureItem}>✓ Invoice Generation (50/mo)</Text>
-              <Text style={styles.planFeatureItem}>✓ 10GB Cloud Storage</Text>
-            </View>
-            <Button title="Get Starter" onPress={() => onGoToAuth('register')} variant="secondary" />
-          </Card>
-
-          {/* Growth */}
-          <Card style={[styles.pricingCard, styles.pricingCardFeatured]} padding="xl">
-            <Badge label="MOST POPULAR" variant="primary" style={{ marginBottom: spacing.sm }} />
-            <Text style={styles.planName}>Growth</Text>
-            <Text style={styles.planPrice}>{formatAmount(149, { showDecimals: false })}<Text style={styles.planPeriod}> / month</Text></Text>
-            <Text style={styles.planDesc}>For scaling enterprises with custom automation needs.</Text>
-            <View style={styles.planFeatures}>
-              <Text style={styles.planFeatureItem}>✓ Up to 25 Team Members</Text>
-              <Text style={styles.planFeatureItem}>✓ Unlimited CRM & Invoices</Text>
-              <Text style={styles.planFeatureItem}>✓ Autonomous Workflow Builder</Text>
-              <Text style={styles.planFeatureItem}>✓ HR & Support Ticket Desk</Text>
-              <Text style={styles.planFeatureItem}>✓ 100GB Cloud Storage</Text>
-            </View>
-            <Button title="Start 14-Day Free Trial" onPress={() => onGoToAuth('register')} variant="primary" />
-          </Card>
-
-          {/* Enterprise */}
-          <Card style={styles.pricingCard} padding="xl">
-            <Text style={styles.planName}>Enterprise</Text>
-            <Text style={styles.planPrice}>{formatAmount(399, { showDecimals: false })}<Text style={styles.planPeriod}> / month</Text></Text>
-            <Text style={styles.planDesc}>Dedicated infrastructure and bespoke integrations.</Text>
-            <View style={styles.planFeatures}>
-              <Text style={styles.planFeatureItem}>✓ Unlimited Team Members</Text>
-              <Text style={styles.planFeatureItem}>✓ Multi-Tenant Isolation</Text>
-              <Text style={styles.planFeatureItem}>✓ 99.99% SLA Guarantee</Text>
-              <Text style={styles.planFeatureItem}>✓ Dedicated 24/7 Account Manager</Text>
-              <Text style={styles.planFeatureItem}>✓ 1TB High-Speed Cloud</Text>
-            </View>
-            <Button title="Contact Sales" onPress={() => onGoToAuth('register')} variant="secondary" />
-          </Card>
-        </View>
-      </View>
-
-      {/* Public Contact & Inquiry Section */}
-      <View style={styles.contactSection}>
-        <Card style={styles.contactCard} padding="xl">
-          <View style={[styles.contactRow, { flexDirection: isDesktop ? 'row' : 'column' }]}>
-            <View style={[styles.contactInfo, { marginRight: isDesktop ? spacing['2xl'] : 0, marginBottom: isDesktop ? 0 : spacing.xl }]}>
-              <Badge label="DIRECT EXECUTIVE INQUIRIES" variant="primary" style={{ marginBottom: spacing.sm }} />
-              <Text style={styles.contactTitle}>Connect with Our Executive Team</Text>
-              <Text style={styles.contactDesc}>
-                Have specific technical requirements, custom integration requests, or enterprise SLA inquiries?
-                Submit your inquiry and our team will get back to you promptly.
-              </Text>
-
-              <View style={styles.contactDetails}>
-                <View style={styles.contactDetailRow}>
-                  <Mail size={16} color={colors.primary} />
-                  <Text style={styles.contactDetailText}>Direct: hello@celarox.com</Text>
-                </View>
-                <View style={styles.contactDetailRow}>
-                  <Building size={16} color={colors.primary} />
-                  <Text style={styles.contactDetailText}>Global HQ: Celarox Enterprise Inc.</Text>
-                </View>
-                <View style={styles.contactDetailRow}>
-                  <Globe size={16} color={colors.primary} />
-                  <Text style={styles.contactDetailText}>https://celarox.com</Text>
+                  <View style={styles.contactDetailRow}>
+                    <Building size={16} color={colors.primary} />
+                    <Text style={styles.contactDetailText}>Global HQ: Celarox Enterprise Inc.</Text>
+                  </View>
+                  <View style={styles.contactDetailRow}>
+                    <Globe size={16} color={colors.primary} />
+                    <Text style={styles.contactDetailText}>https://celarox.com</Text>
+                  </View>
                 </View>
               </View>
-            </View>
 
-            <View style={styles.contactForm}>
-              <Input
-                label="Full Name *"
-                placeholder="Jason Kenneth"
-                value={contactName}
-                onChangeText={setContactName}
-              />
-              <Input
-                label="Business Email *"
-                placeholder="jason@company.com"
-                value={contactEmail}
-                onChangeText={setContactEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-              <Input
-                label="Company / Organization"
-                placeholder="Acme Global Inc."
-                value={contactCompany}
-                onChangeText={setContactCompany}
-              />
-              <Input
-                label="Inquiry Subject"
-                placeholder="Enterprise Plan & Migration"
-                value={contactSubject}
-                onChangeText={setContactSubject}
-              />
-              <Input
-                label="Your Message *"
-                placeholder="Describe your organization's needs and current software stack..."
-                value={contactMessage}
-                onChangeText={setContactMessage}
-                multiline
-                numberOfLines={4}
-                inputStyle={{ height: 90, textAlignVertical: 'top' }}
-              />
+              <View style={styles.contactForm}>
+                <Input
+                  label="Full Name *"
+                  placeholder="Jason Kenneth"
+                  value={contactName}
+                  onChangeText={setContactName}
+                />
+                <Input
+                  label="Business Email *"
+                  placeholder="jason@company.com"
+                  value={contactEmail}
+                  onChangeText={setContactEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+                <Input
+                  label="Company / Organization"
+                  placeholder="Acme Global Inc."
+                  value={contactCompany}
+                  onChangeText={setContactCompany}
+                />
+                <Input
+                  label="Inquiry Subject"
+                  placeholder="Enterprise Plan & Migration"
+                  value={contactSubject}
+                  onChangeText={setContactSubject}
+                />
+                <Input
+                  label="Your Message *"
+                  placeholder="Describe your organization's needs and current software stack..."
+                  value={contactMessage}
+                  onChangeText={setContactMessage}
+                  multiline
+                  numberOfLines={4}
+                  inputStyle={{ height: 90, textAlignVertical: 'top' }}
+                />
 
-              <Button
-                title={contactSending ? 'Transmitting...' : 'Send Inquiry'}
-                onPress={handleSendInquiry}
-                loading={contactSending}
-                variant="primary"
-                icon={<Send size={16} color="#FFFFFF" />}
-              />
+                <Button
+                  title={contactSending ? 'Transmitting...' : 'Send Inquiry'}
+                  onPress={handleSendInquiry}
+                  loading={contactSending}
+                  variant="primary"
+                  icon={<Send size={16} color="#FFFFFF" />}
+                />
+              </View>
             </View>
+          </Card>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <View style={styles.footerTop}>
+            <View style={styles.brandRow}>
+              <Image
+                source={require('../../../assets/logo.png')}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
+              <View style={styles.brandInfo}>
+                <Text style={styles.brandTitle}>CELAROX</Text>
+                <Text style={styles.brandTag}>ENTERPRISE</Text>
+              </View>
+            </View>
+            <Text style={styles.footerTagline}>
+              The unified business management platform for next-generation enterprises.
+            </Text>
           </View>
-        </Card>
-      </View>
 
-      {/* Footer */}
-      <View style={styles.footer}>
-        <View style={styles.footerTop}>
-          <View style={styles.brandRow}>
-            <View style={styles.logoBadge}>
-              <Sparkles size={18} color="#FFFFFF" />
-            </View>
-            <Text style={styles.brandTitle}>Celarox</Text>
-            <Text style={styles.brandTag}>ENTERPRISE</Text>
+          <View style={styles.footerLinksRow}>
+            <TouchableOpacity onPress={onGoToPrivacy}>
+              <Text style={styles.footerLinkText}>Privacy Policy</Text>
+            </TouchableOpacity>
+            <Text style={styles.footerDivider}>•</Text>
+            <TouchableOpacity onPress={onGoToTerms}>
+              <Text style={styles.footerLinkText}>Terms of Service</Text>
+            </TouchableOpacity>
+            <Text style={styles.footerDivider}>•</Text>
+            <Text style={styles.footerLinkText}>Support: hello@celarox.com</Text>
           </View>
-          <Text style={styles.footerTagline}>
-            The unified business management platform for next-generation enterprises.
+
+          <Text style={styles.copyright}>
+            © 2026 Celarox Enterprise Inc. All rights reserved. Version 1.0.
           </Text>
         </View>
-
-        <View style={styles.footerLinksRow}>
-          <TouchableOpacity onPress={onGoToPrivacy}>
-            <Text style={styles.footerLinkText}>Privacy Policy</Text>
-          </TouchableOpacity>
-          <Text style={styles.footerDivider}>•</Text>
-          <TouchableOpacity onPress={onGoToTerms}>
-            <Text style={styles.footerLinkText}>Terms of Service</Text>
-          </TouchableOpacity>
-          <Text style={styles.footerDivider}>•</Text>
-          <Text style={styles.footerLinkText}>Support: hello@celarox.com</Text>
-        </View>
-
-        <Text style={styles.copyright}>
-          © 2026 Celarox Enterprise Inc. All rights reserved. Version 1.0.
-        </Text>
-      </View>
+      </ScrollView>
 
       <CurrencyModal
         visible={currencyModalOpen}
         onClose={() => setCurrencyModalOpen(false)}
       />
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
     flex: 1,
     backgroundColor: colors.background,
+    height: '100%',
+    overflow: 'hidden',
   },
   navBar: {
-    height: 72,
+    height: 64,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: spacing['2xl'],
+    paddingHorizontal: spacing.xl,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    backgroundColor: colors.glassBg,
+    backgroundColor: '#FFFFFF',
+    zIndex: 10,
+    ...shadows.subtle,
   },
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logoBadge: {
-    width: 34,
-    height: 34,
-    borderRadius: radii.md,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoImage: {
+    width: 36,
+    height: 36,
     marginRight: spacing.sm,
+  },
+  brandInfo: {
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   brandTitle: {
     color: colors.textPrimary,
-    fontSize: typography.sizes.xl,
+    fontSize: typography.sizes.base,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
-    letterSpacing: -0.5,
+    letterSpacing: 1.2,
   },
   brandTag: {
     color: colors.primary,
-    fontSize: 10,
-    fontWeight: typography.weights.heavy,
+    fontSize: 9,
+    fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
-    marginLeft: 8,
-    letterSpacing: 1.2,
+    letterSpacing: 1.5,
   },
   navActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.base,
+    gap: spacing.sm + 2,
   },
   currencyTopBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    gap: 4,
+    backgroundColor: colors.backgroundTertiary,
+    paddingVertical: 5,
+    paddingHorizontal: spacing.sm + 2,
     borderRadius: radii.full,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: colors.border,
   },
   currencyTopFlag: {
-    fontSize: 14,
+    fontSize: 13,
+    marginRight: 2,
   },
   currencyTopCode: {
     color: colors.textPrimary,
@@ -632,35 +756,45 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily,
   },
   currencyTopSymbol: {
-    color: colors.textSecondary,
-    fontSize: 11,
+    color: colors.primary,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
   },
   currencyAutoTag: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    backgroundColor: colors.successBg,
     paddingHorizontal: 5,
     paddingVertical: 1,
-    borderRadius: radii.sm,
+    borderRadius: radii.full,
     marginLeft: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(5, 150, 105, 0.2)',
   },
   currencyAutoTagText: {
     color: colors.success,
-    fontSize: 9,
+    fontSize: 8,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
   },
   navLink: {
-    paddingVertical: 8,
-    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    paddingHorizontal: spacing.sm,
   },
   navLinkText: {
     color: colors.textSecondary,
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.medium,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.semibold,
     fontFamily: typography.fontFamily,
   },
+  scrollBody: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 0,
+  },
   heroSection: {
-    paddingVertical: spacing['4xl'],
+    paddingTop: spacing['3xl'],
+    paddingBottom: spacing['4xl'],
     paddingHorizontal: spacing.xl,
     alignItems: 'center',
     maxWidth: 1080,
@@ -728,7 +862,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: radii.xl,
     padding: 4,
     marginBottom: spacing.base,
@@ -745,7 +879,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   tabButtonActive: {
-    backgroundColor: colors.card,
+    backgroundColor: '#FFFFFF',
     ...shadows.subtle,
   },
   tabText: {
@@ -759,16 +893,19 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold,
   },
   previewCard: {
-    backgroundColor: colors.card,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: colors.cardBorder,
     minHeight: 240,
+    ...shadows.card,
   },
   previewHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: spacing.lg,
+    flexWrap: 'wrap',
+    gap: spacing.sm,
   },
   previewTitle: {
     color: colors.textPrimary,
@@ -787,9 +924,11 @@ const styles = StyleSheet.create({
   },
   stageColumn: {
     flex: 1,
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: radii.lg,
     padding: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
   },
   stageTitle: {
     color: colors.textTertiary,
@@ -800,12 +939,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   stageCard: {
-    backgroundColor: colors.card,
+    backgroundColor: '#FFFFFF',
     borderRadius: radii.md,
     padding: spacing.sm + 2,
     marginBottom: spacing.xs,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.border,
+    ...shadows.subtle,
   },
   stageCardTitle: {
     color: colors.textPrimary,
@@ -820,9 +960,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   invoiceDemoBox: {
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: radii.lg,
     padding: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
   },
   invoiceDemoRow: {
     flexDirection: 'row',
@@ -839,6 +981,43 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.sm,
     fontFamily: typography.fontFamily,
     fontWeight: typography.weights.medium,
+  },
+  workflowDemoBox: {
+    backgroundColor: colors.backgroundTertiary,
+    borderRadius: radii.lg,
+    padding: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+  },
+  workflowStep: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  workflowDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: colors.warning,
+  },
+  workflowStepTitle: {
+    color: colors.textPrimary,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
+  workflowStepDesc: {
+    color: colors.textTertiary,
+    fontSize: 11,
+    fontFamily: typography.fontFamily,
+    marginLeft: 8,
+  },
+  workflowConnector: {
+    width: 2,
+    height: 16,
+    backgroundColor: colors.border,
+    marginLeft: 4,
+    marginVertical: 4,
   },
   gridSection: {
     maxWidth: 1180,
@@ -877,6 +1056,9 @@ const styles = StyleSheet.create({
   },
   appCard: {
     height: '100%',
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
+    ...shadows.card,
   },
   appIconBox: {
     width: 44,
@@ -914,6 +1096,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: colors.cardBorder,
+    ...shadows.card,
   },
   pricingCardFeatured: {
     borderColor: colors.primary,
@@ -963,6 +1146,7 @@ const styles = StyleSheet.create({
   contactCard: {
     borderWidth: 1,
     borderColor: colors.cardBorder,
+    ...shadows.card,
   },
   contactRow: {
     gap: spacing.xl,
@@ -1007,7 +1191,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing['2xl'],
     paddingHorizontal: spacing.xl,
     alignItems: 'center',
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: '#FFFFFF',
   },
   footerTop: {
     alignItems: 'center',
@@ -1018,17 +1202,21 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
     marginTop: spacing.xs,
+    textAlign: 'center',
   },
   footerLinksRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
     marginBottom: spacing.md,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   footerLinkText: {
     color: colors.textSecondary,
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
+    fontWeight: typography.weights.medium,
   },
   footerDivider: {
     color: colors.textMuted,

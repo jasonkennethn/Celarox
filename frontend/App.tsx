@@ -8,6 +8,7 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -27,7 +28,7 @@ import {
   Building,
   ChevronRight,
   Shield,
-  Layers,
+  Globe,
 } from 'lucide-react-native';
 
 import { colors, radii, spacing, typography } from './src/theme';
@@ -95,7 +96,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: 'projects',
-    label: 'Operations & Projects',
+    label: 'Operations & Tasks',
     icon: (c) => <KanbanSquare size={18} color={c} />,
   },
   {
@@ -280,7 +281,7 @@ const MainAppNavigator: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.appContainer}>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
 
       {/* Sidebar for Desktop */}
       {isDesktop ? (
@@ -291,9 +292,11 @@ const MainAppNavigator: React.FC = () => {
             onPress={() => navigateTo('landing')}
             activeOpacity={0.8}
           >
-            <View style={styles.logoIcon}>
-              <Layers size={20} color="#FFFFFF" />
-            </View>
+            <Image
+              source={require('./assets/logo.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
             <View>
               <Text style={styles.logoText}>CELAROX</Text>
               <Text style={styles.logoSubText}>ENTERPRISE</Text>
@@ -320,7 +323,7 @@ const MainAppNavigator: React.FC = () => {
                   activeOpacity={0.7}
                 >
                   <View style={styles.navItemLeft}>
-                    {item.icon(isActive ? colors.primary : colors.textSecondary)}
+                    {item.icon(isActive ? colors.primary : colors.textTertiary)}
                     <Text
                       style={[styles.navItemText, isActive && styles.navItemTextActive]}
                     >
@@ -333,6 +336,16 @@ const MainAppNavigator: React.FC = () => {
             })}
           </ScrollView>
 
+          {/* Public Website Button */}
+          <TouchableOpacity
+            style={styles.publicWebBtn}
+            onPress={() => navigateTo('landing')}
+            activeOpacity={0.75}
+          >
+            <Globe size={15} color={colors.textTertiary} />
+            <Text style={styles.publicWebText}>Landing Showcase</Text>
+          </TouchableOpacity>
+
           {/* User Profile / Logout footer */}
           <View style={styles.sidebarFooter}>
             <View style={styles.userTile}>
@@ -343,7 +356,7 @@ const MainAppNavigator: React.FC = () => {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.userName} numberOfLines={1}>
-                  {user?.full_name || 'Admin User'}
+                  {user?.full_name || 'Executive User'}
                 </Text>
                 <Text style={styles.userRole} numberOfLines={1}>
                   {user?.email || 'admin@celarox.com'}
@@ -367,7 +380,7 @@ const MainAppNavigator: React.FC = () => {
               style={styles.mobileMenuToggle}
               activeOpacity={0.7}
             >
-              {mobileMenuOpen ? <X size={22} color="#FFFFFF" /> : <Menu size={22} color="#FFFFFF" />}
+              {mobileMenuOpen ? <X size={22} color={colors.textPrimary} /> : <Menu size={22} color={colors.textPrimary} />}
             </TouchableOpacity>
           )}
 
@@ -421,7 +434,7 @@ const MainAppNavigator: React.FC = () => {
                     onPress={() => navigateTo(item.id)}
                     style={[styles.mobileNavItem, isActive && styles.mobileNavItemActive]}
                   >
-                    {item.icon(isActive ? colors.primary : colors.textSecondary)}
+                    {item.icon(isActive ? colors.primary : colors.textTertiary)}
                     <Text
                       style={[styles.navItemText, isActive && styles.navItemTextActive]}
                     >
@@ -431,8 +444,15 @@ const MainAppNavigator: React.FC = () => {
                 );
               })}
               <TouchableOpacity
+                onPress={() => navigateTo('landing')}
+                style={styles.mobileNavItem}
+              >
+                <Globe size={18} color={colors.textSecondary} />
+                <Text style={styles.navItemText}>Landing Showcase</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={logout}
-                style={[styles.mobileNavItem, { marginTop: spacing.md, borderTopWidth: 1, borderTopColor: colors.border }]}
+                style={[styles.mobileNavItem, { marginTop: spacing.sm, borderTopWidth: 1, borderTopColor: colors.border }]}
               >
                 <LogOut size={18} color={colors.danger} />
                 <Text style={[styles.navItemText, { color: colors.danger }]}>Sign Out</Text>
@@ -465,13 +485,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     flexDirection: 'row',
+    height: '100%',
+    overflow: 'hidden',
   },
   sidebar: {
     width: 260,
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: '#FFFFFF',
     borderRightWidth: 1,
     borderRightColor: colors.border,
     flexDirection: 'column',
+    height: '100%',
   },
   logoRow: {
     flexDirection: 'row',
@@ -482,16 +505,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-  logoIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: radii.md,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoImage: {
+    width: 36,
+    height: 36,
   },
   logoText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: typography.sizes.base,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
@@ -511,10 +530,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
     paddingVertical: 6,
     paddingHorizontal: spacing.sm,
-    backgroundColor: 'rgba(99, 102, 241, 0.08)',
+    backgroundColor: colors.backgroundTertiary,
     borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: 'rgba(99, 102, 241, 0.2)',
+    borderColor: colors.border,
   },
   workspaceName: {
     color: colors.textPrimary,
@@ -525,19 +544,19 @@ const styles = StyleSheet.create({
   navList: {
     flex: 1,
     paddingHorizontal: spacing.sm,
-    marginTop: spacing.md,
+    marginTop: spacing.sm,
   },
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 10,
+    paddingVertical: 9,
     paddingHorizontal: spacing.md,
     borderRadius: radii.md,
     marginBottom: 2,
   },
   navItemActive: {
-    backgroundColor: 'rgba(99, 102, 241, 0.12)',
+    backgroundColor: 'rgba(37, 99, 235, 0.08)',
   },
   navItemLeft: {
     flexDirection: 'row',
@@ -551,13 +570,33 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily,
   },
   navItemTextActive: {
-    color: '#FFFFFF',
+    color: colors.primary,
+    fontWeight: typography.weights.bold,
+  },
+  publicWebBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.xs,
+    paddingVertical: 8,
+    paddingHorizontal: spacing.md,
+    borderRadius: radii.md,
+    backgroundColor: colors.backgroundTertiary,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  publicWebText: {
+    color: colors.textSecondary,
+    fontSize: typography.sizes.xs,
     fontWeight: typography.weights.semibold,
+    fontFamily: typography.fontFamily,
   },
   sidebarFooter: {
     padding: spacing.md,
     borderTopWidth: 1,
     borderTopColor: colors.border,
+    backgroundColor: '#FFFFFF',
   },
   userTile: {
     flexDirection: 'row',
@@ -568,9 +607,11 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: radii.full,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: 'rgba(37, 99, 235, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(37, 99, 235, 0.25)',
   },
   avatarLetter: {
     color: colors.primary,
@@ -595,6 +636,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: colors.background,
+    height: '100%',
+    overflow: 'hidden',
   },
   topHeader: {
     height: 56,
@@ -604,7 +647,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: '#FFFFFF',
   },
   mobileMenuToggle: {
     padding: spacing.xs,
@@ -619,6 +662,7 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.base,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
+    letterSpacing: -0.3,
   },
   headerRight: {
     flexDirection: 'row',
@@ -633,7 +677,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm + 2,
     borderRadius: radii.full,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: colors.border,
     gap: 4,
   },
   currencyTopFlag: {
@@ -648,15 +692,17 @@ const styles = StyleSheet.create({
   currencyTopSymbol: {
     color: colors.primary,
     fontSize: 11,
-    fontWeight: typography.weights.semibold,
+    fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
   },
   currencyAutoTag: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    backgroundColor: colors.successBg,
     paddingHorizontal: 5,
     paddingVertical: 1,
     borderRadius: radii.full,
     marginLeft: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(5, 150, 105, 0.2)',
   },
   currencyAutoTagText: {
     color: colors.success,
@@ -670,23 +716,28 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 4,
     paddingHorizontal: spacing.sm,
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    backgroundColor: colors.successBg,
     borderRadius: radii.full,
     borderWidth: 1,
-    borderColor: 'rgba(16, 185, 129, 0.25)',
+    borderColor: 'rgba(5, 150, 105, 0.2)',
   },
   headerPillText: {
     color: colors.success,
     fontSize: 10,
-    fontWeight: typography.weights.semibold,
+    fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
   },
   mobileNavDropdown: {
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     padding: spacing.md,
     maxHeight: 380,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 4,
   },
   mobileNavItem: {
     flexDirection: 'row',
@@ -697,9 +748,10 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
   },
   mobileNavItemActive: {
-    backgroundColor: 'rgba(99, 102, 241, 0.15)',
+    backgroundColor: 'rgba(37, 99, 235, 0.08)',
   },
   screenHost: {
     flex: 1,
+    overflow: 'hidden',
   },
 });

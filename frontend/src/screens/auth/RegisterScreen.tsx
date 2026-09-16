@@ -5,8 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
-import { Sparkles, Mail, Lock, User, Building, ArrowRight, ArrowLeft } from 'lucide-react-native';
+import { Mail, Lock, User, Building, ArrowRight, ArrowLeft } from 'lucide-react-native';
 import { colors, radii, spacing, typography, shadows } from '../../theme';
 import { Button, Card, Input } from '../../components/common';
 import { useAuth } from '../../context/AuthContext';
@@ -66,19 +67,22 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <TouchableOpacity onPress={onGoToLanding} style={styles.backBtn}>
+      <TouchableOpacity onPress={onGoToLanding} style={styles.backBtn} activeOpacity={0.7}>
         <ArrowLeft size={16} color={colors.textSecondary} />
         <Text style={styles.backBtnText}>Back to website</Text>
       </TouchableOpacity>
 
       <Card style={styles.card} padding="xl">
         <View style={styles.header}>
-          <View style={styles.logoBadge}>
-            <Sparkles size={22} color="#FFFFFF" />
-          </View>
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.brandTitle}>CELAROX</Text>
           <Text style={styles.title}>Create Enterprise Workspace</Text>
           <Text style={styles.subtitle}>
-            Launch your company's digital operating system in under 60 seconds.
+            Launch your company's unified management console in under 60 seconds.
           </Text>
         </View>
 
@@ -142,7 +146,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
           <View style={styles.footerRow}>
             <Text style={styles.footerText}>Already have an account? </Text>
-            <TouchableOpacity onPress={onGoToLogin}>
+            <TouchableOpacity onPress={onGoToLogin} activeOpacity={0.7}>
               <Text style={styles.loginLink}>Sign in</Text>
             </TouchableOpacity>
           </View>
@@ -174,27 +178,32 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontSize: typography.sizes.sm,
     fontFamily: typography.fontFamily,
+    fontWeight: typography.weights.medium,
   },
   card: {
     width: '100%',
     maxWidth: 480,
     borderWidth: 1,
     borderColor: colors.cardBorder,
+    backgroundColor: '#FFFFFF',
     ...shadows.card,
   },
   header: {
     alignItems: 'center',
     marginBottom: spacing.xl,
   },
-  logoBadge: {
-    width: 44,
-    height: 44,
-    borderRadius: radii.xl,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-    ...shadows.glow,
+  logoImage: {
+    width: 48,
+    height: 48,
+    marginBottom: spacing.xs,
+  },
+  brandTitle: {
+    color: colors.primary,
+    fontSize: 10,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+    letterSpacing: 2,
+    marginBottom: spacing.xs,
   },
   title: {
     color: colors.textPrimary,

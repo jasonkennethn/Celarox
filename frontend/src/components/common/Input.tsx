@@ -27,7 +27,7 @@ export const Input: React.FC<InputProps> = ({
   rightElement,
   containerStyle,
   inputStyle,
-  placeholderTextColor = colors.textTertiary,
+  placeholderTextColor = colors.textMuted,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -64,28 +64,28 @@ const styles = StyleSheet.create({
   label: {
     color: colors.textSecondary,
     fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.medium,
+    fontWeight: typography.weights.semibold,
     fontFamily: typography.fontFamily,
     marginBottom: spacing.xs + 2,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radii.lg,
     borderWidth: 1,
-    borderColor: colors.inputBorder,
+    borderColor: colors.border,
     paddingHorizontal: spacing.md,
     minHeight: 44,
   },
   inputFocused: {
     borderColor: colors.primary,
-    backgroundColor: '#0F1422',
+    backgroundColor: '#FFFFFF',
   },
   inputError: {
     borderColor: colors.danger,
+    backgroundColor: '#FEF2F2',
   },
   iconContainer: {
     marginRight: spacing.sm,

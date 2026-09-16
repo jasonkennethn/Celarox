@@ -24,17 +24,17 @@ export const Badge: React.FC<BadgeProps> = ({
   const getColors = () => {
     switch (variant) {
       case 'primary':
-        return { bg: colors.primaryLight, text: colors.primary, dot: colors.primary };
+        return { bg: colors.primaryLight, text: colors.primary, dot: colors.primary, border: 'rgba(37, 99, 235, 0.2)' };
       case 'success':
-        return { bg: colors.successLight, text: colors.success, dot: colors.success };
+        return { bg: colors.successBg, text: colors.success, dot: colors.success, border: 'rgba(5, 150, 105, 0.2)' };
       case 'warning':
-        return { bg: colors.warningLight, text: colors.warning, dot: colors.warning };
+        return { bg: colors.warningBg, text: colors.warning, dot: colors.warning, border: 'rgba(217, 119, 6, 0.2)' };
       case 'danger':
-        return { bg: colors.dangerLight, text: colors.danger, dot: colors.danger };
+        return { bg: colors.dangerBg, text: colors.danger, dot: colors.danger, border: 'rgba(220, 38, 38, 0.2)' };
       case 'info':
-        return { bg: colors.infoLight, text: colors.info, dot: colors.info };
+        return { bg: colors.infoBg, text: colors.info, dot: colors.info, border: 'rgba(2, 132, 199, 0.2)' };
       default:
-        return { bg: 'rgba(255, 255, 255, 0.08)', text: colors.textSecondary, dot: colors.textSecondary };
+        return { bg: colors.backgroundTertiary, text: colors.textSecondary, dot: colors.textTertiary, border: colors.border };
     }
   };
 
@@ -45,7 +45,7 @@ export const Badge: React.FC<BadgeProps> = ({
     <View
       style={[
         styles.container,
-        { backgroundColor: scheme.bg },
+        { backgroundColor: scheme.bg, borderColor: scheme.border },
         isSmall ? styles.containerSm : styles.containerMd,
         style,
       ]}
@@ -70,21 +70,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: radii.full,
+    borderWidth: 1,
     alignSelf: 'flex-start',
   },
   containerMd: {
-    paddingVertical: 4,
+    paddingVertical: 3,
     paddingHorizontal: spacing.sm + 2,
   },
   containerSm: {
     paddingVertical: 2,
-    paddingHorizontal: spacing.xs + 2,
+    paddingHorizontal: spacing.xs + 3,
   },
   dot: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    marginRight: 6,
+    marginRight: 5,
   },
   text: {
     fontWeight: typography.weights.semibold,

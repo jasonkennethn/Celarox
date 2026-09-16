@@ -5,8 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
-import { KeyRound, Mail, ArrowRight, ArrowLeft } from 'lucide-react-native';
+import { Mail, ArrowRight, ArrowLeft } from 'lucide-react-native';
 import { colors, radii, spacing, typography, shadows } from '../../theme';
 import { Button, Card, Input } from '../../components/common';
 import { api } from '../../api/endpoints';
@@ -46,9 +47,12 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Card style={styles.card} padding="xl">
         <View style={styles.header}>
-          <View style={styles.logoBadge}>
-            <KeyRound size={22} color="#FFFFFF" />
-          </View>
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.brandTitle}>CELAROX</Text>
           <Text style={styles.title}>Password Recovery</Text>
           <Text style={styles.subtitle}>
             Enter your corporate email address to receive reset instructions.
@@ -90,7 +94,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
               iconPosition="right"
             />
 
-            <TouchableOpacity onPress={onGoToLogin} style={styles.backToLogin}>
+            <TouchableOpacity onPress={onGoToLogin} style={styles.backToLogin} activeOpacity={0.7}>
               <ArrowLeft size={14} color={colors.textSecondary} />
               <Text style={styles.backToLoginText}>Back to login</Text>
             </TouchableOpacity>
@@ -117,21 +121,25 @@ const styles = StyleSheet.create({
     maxWidth: 440,
     borderWidth: 1,
     borderColor: colors.cardBorder,
+    backgroundColor: '#FFFFFF',
     ...shadows.card,
   },
   header: {
     alignItems: 'center',
     marginBottom: spacing.xl,
   },
-  logoBadge: {
-    width: 44,
-    height: 44,
-    borderRadius: radii.xl,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-    ...shadows.glow,
+  logoImage: {
+    width: 48,
+    height: 48,
+    marginBottom: spacing.xs,
+  },
+  brandTitle: {
+    color: colors.primary,
+    fontSize: 10,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+    letterSpacing: 2,
+    marginBottom: spacing.xs,
   },
   title: {
     color: colors.textPrimary,
@@ -161,6 +169,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
+    fontWeight: typography.weights.medium,
   },
   submittedBox: {
     alignItems: 'center',

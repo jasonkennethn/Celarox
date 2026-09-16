@@ -41,7 +41,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({ visible, onClose }
         <View style={[styles.autoCard, isAutoMode && styles.autoCardActive]}>
           <View style={styles.autoLeft}>
             <View style={styles.autoIconBg}>
-              <Compass size={18} color={isAutoMode ? colors.primary : colors.textSecondary} />
+              <Compass size={18} color={isAutoMode ? colors.primary : colors.textTertiary} />
             </View>
             <View style={styles.autoMeta}>
               <View style={styles.autoHeaderRow}>
@@ -60,7 +60,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({ visible, onClose }
           <Switch
             value={isAutoMode}
             onValueChange={(val) => setAutoMode(val)}
-            trackColor={{ false: colors.backgroundTertiary, true: colors.primary }}
+            trackColor={{ false: '#CBD5E1', true: colors.primary }}
             thumbColor="#FFFFFF"
           />
         </View>
@@ -110,7 +110,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({ visible, onClose }
                   </Text>
                   {isSelected && (
                     <View style={styles.checkCircle}>
-                      <Check size={14} color="#FFFFFF" />
+                      <Check size={13} color="#FFFFFF" />
                     </View>
                   )}
                 </View>
@@ -142,12 +142,12 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderRadius: radii.lg,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.border,
     marginBottom: spacing.lg,
   },
   autoCardActive: {
-    borderColor: 'rgba(99, 102, 241, 0.4)',
-    backgroundColor: 'rgba(99, 102, 241, 0.06)',
+    borderColor: 'rgba(37, 99, 235, 0.3)',
+    backgroundColor: 'rgba(37, 99, 235, 0.04)',
   },
   autoLeft: {
     flexDirection: 'row',
@@ -159,12 +159,12 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: radii.md,
-    backgroundColor: colors.card,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.md,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.border,
   },
   autoMeta: {
     flex: 1,
@@ -187,10 +187,10 @@ const styles = StyleSheet.create({
     borderRadius: radii.full,
   },
   statusActive: {
-    backgroundColor: colors.successLight,
+    backgroundColor: colors.successBg,
   },
   statusInactive: {
-    backgroundColor: 'rgba(245, 158, 11, 0.15)',
+    backgroundColor: colors.warningBg,
   },
   statusText: {
     fontSize: 9,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     color: colors.warning,
   },
   autoSubtitle: {
-    color: colors.textSecondary,
+    color: colors.textTertiary,
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
     marginTop: 2,
@@ -232,14 +232,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: spacing.sm + 2,
     paddingHorizontal: spacing.md,
-    backgroundColor: colors.backgroundSecondary,
-    borderRadius: radii.md,
+    backgroundColor: '#FFFFFF',
+    borderRadius: radii.lg,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.border,
     marginBottom: spacing.xs,
   },
   currencyRowSelected: {
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    backgroundColor: 'rgba(37, 99, 235, 0.05)',
     borderColor: colors.primary,
   },
   rowLeft: {
@@ -272,10 +272,12 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily,
   },
   regionBadge: {
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+    backgroundColor: colors.successBg,
     paddingHorizontal: 6,
     paddingVertical: 1,
     borderRadius: radii.full,
+    borderWidth: 1,
+    borderColor: 'rgba(5, 150, 105, 0.2)',
   },
   regionBadgeText: {
     color: colors.success,
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily,
   },
   currencyName: {
-    color: colors.textSecondary,
+    color: colors.textTertiary,
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
     marginTop: 2,
@@ -311,10 +313,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.backgroundTertiary,
-    padding: spacing.sm,
-    borderRadius: radii.md,
+    padding: spacing.sm + 2,
+    borderRadius: radii.lg,
     marginTop: spacing.md,
     gap: spacing.xs,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   footerText: {
     color: colors.textSecondary,

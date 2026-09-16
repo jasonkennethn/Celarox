@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Platform,
+  Image,
 } from 'react-native';
 import {
   LayoutDashboard,
@@ -42,12 +42,14 @@ interface SidebarProps {
   currentScreen: NavScreen;
   onNavigate: (screen: NavScreen) => void;
   onCloseMobile?: () => void;
+  onViewLanding?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   currentScreen,
   onNavigate,
   onCloseMobile,
+  onViewLanding,
 }) => {
   const { user, activeWorkspace, logout } = useAuth();
 
@@ -78,24 +80,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <View style={styles.container}>
       {/* Brand & Workspace Header */}
       <View style={styles.header}>
-        <View style={styles.brandRow}>
-          <View style={styles.logoBadge}>
-            <Sparkles size={18} color="#FFFFFF" />
-          </View>
+        <TouchableOpacity
+          style={styles.brandRow}
+          onPress={onViewLanding}
+          activeOpacity={0.8}
+        >
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <View style={styles.brandInfo}>
-            <Text style={styles.brandName}>Celarox</Text>
+            <Text style={styles.brandName}>CELAROX</Text>
             <Text style={styles.brandTag}>ENTERPRISE</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Workspace Chip */}
-        <TouchableOpacity style={styles.workspaceSelector} activeOpacity={0.8}>
-          <Building2 size={16} color={colors.primary} />
+        <View style={styles.workspaceSelector}>
+          <Building2 size={15} color={colors.primary} />
           <Text style={styles.workspaceName} numberOfLines={1}>
-            {activeWorkspace?.name || 'Main Workspace'}
+            {activeWorkspace?.name || 'Celarox Enterprise'}
           </Text>
-          <ChevronDown size={14} color={colors.textTertiary} />
-        </TouchableOpacity>
+        </View>
       </View>
 
       {/* Navigation List */}
@@ -119,7 +126,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <View style={[styles.iconWrapper, isActive && styles.iconWrapperActive]}>
                 <IconComponent
                   size={18}
-                  color={isActive ? colors.primary : colors.textSecondary}
+                  color={isActive ? colors.primary : colors.textTertiary}
                 />
               </View>
               <Text
@@ -145,13 +152,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </View>
           <View style={styles.userInfo}>
             <Text style={styles.userName} numberOfLines={1}>
-              {user?.full_name || user?.email || 'User'}
+              {user?.full_name || user?.email || 'Admin User'}
             </Text>
             <Text style={styles.userRole} numberOfLines={1}>
-              {user?.role || 'Executive'}
+              {user?.role || 'Enterprise Admin'}
             </Text>
           </View>
-          <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
+          <TouchableOpacity onPress={logout} style={styles.logoutBtn} activeOpacity={0.7}>
             <LogOut size={16} color={colors.textTertiary} />
           </TouchableOpacity>
         </View>
@@ -163,7 +170,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: 260,
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: '#FFFFFF',
     borderRightWidth: 1,
     borderRightColor: colors.border,
     height: '100%',
@@ -171,61 +178,57 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   header: {
-    padding: spacing.base,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.divider,
+    borderBottomColor: colors.border,
   },
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: spacing.md,
   },
-  logoBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: radii.md,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  logoImage: {
+    width: 36,
+    height: 36,
     marginRight: spacing.sm,
   },
   brandInfo: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   brandName: {
     color: colors.textPrimary,
-    fontSize: typography.sizes.lg,
+    fontSize: typography.sizes.base,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
-    letterSpacing: -0.5,
+    letterSpacing: 1.2,
   },
   brandTag: {
     color: colors.primary,
     fontSize: 9,
-    fontWeight: typography.weights.heavy,
+    fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
-    marginLeft: 6,
-    letterSpacing: 1,
+    letterSpacing: 1.5,
   },
   workspaceSelector: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.backgroundTertiary,
     borderRadius: radii.md,
-    paddingVertical: 8,
-    paddingHorizontal: spacing.sm,
+    paddingVertical: 7,
+    paddingHorizontal: spacing.sm + 2,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.border,
   },
   workspaceName: {
     flex: 1,
     color: colors.textPrimary,
     fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.medium,
+    fontWeight: typography.weights.semibold,
     fontFamily: typography.fontFamily,
-    marginLeft: spacing.xs,
-    marginRight: spacing.xs,
+    marginLeft: spacing.xs + 2,
   },
   navList: {
     flex: 1,
@@ -241,30 +244,30 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily,
     letterSpacing: 1,
     paddingHorizontal: spacing.sm,
-    marginBottom: spacing.xs,
+    marginBottom: spacing.xs + 2,
     marginTop: spacing.xs,
   },
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 9,
+    paddingVertical: 8,
     paddingHorizontal: spacing.sm,
-    borderRadius: radii.lg,
+    borderRadius: radii.md,
     marginBottom: 2,
   },
   navItemActive: {
-    backgroundColor: 'rgba(99, 102, 241, 0.12)',
+    backgroundColor: 'rgba(37, 99, 235, 0.08)',
   },
   iconWrapper: {
     width: 28,
     height: 28,
-    borderRadius: radii.md,
+    borderRadius: radii.sm,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.sm,
   },
   iconWrapperActive: {
-    backgroundColor: 'rgba(99, 102, 241, 0.2)',
+    backgroundColor: 'rgba(37, 99, 235, 0.12)',
   },
   navLabel: {
     color: colors.textSecondary,
@@ -273,13 +276,14 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily,
   },
   navLabelActive: {
-    color: colors.textPrimary,
-    fontWeight: typography.weights.semibold,
+    color: colors.primary,
+    fontWeight: typography.weights.bold,
   },
   footer: {
-    padding: spacing.base,
+    padding: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: colors.divider,
+    borderTopColor: colors.border,
+    backgroundColor: '#FFFFFF',
   },
   userRow: {
     flexDirection: 'row',
@@ -289,12 +293,12 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: radii.full,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: 'rgba(37, 99, 235, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.sm,
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: 'rgba(37, 99, 235, 0.25)',
   },
   avatarText: {
     color: colors.primary,

@@ -4,10 +4,9 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Platform,
   useWindowDimensions,
 } from 'react-native';
-import { Menu, Plus, Globe, ShieldCheck, ChevronDown, Coins } from 'lucide-react-native';
+import { Menu, Plus, Globe, ShieldCheck, ChevronDown } from 'lucide-react-native';
 import { colors, radii, spacing, typography } from '../../theme';
 import { Button } from '../common/Button';
 import { useAuth } from '../../context/AuthContext';
@@ -34,7 +33,6 @@ export const TopBar: React.FC<TopBarProps> = ({
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
   const isTablet = width >= 768 && width < 1024;
-  const { activeWorkspace } = useAuth();
   const { currentCurrency, isAutoMode } = useCurrency();
   const [currencyModalOpen, setCurrencyModalOpen] = useState(false);
 
@@ -43,7 +41,7 @@ export const TopBar: React.FC<TopBarProps> = ({
       <View style={styles.container}>
         <View style={styles.leftSection}>
           {isMobile && onToggleSidebar && (
-            <TouchableOpacity onPress={onToggleSidebar} style={styles.menuBtn}>
+            <TouchableOpacity onPress={onToggleSidebar} style={styles.menuBtn} activeOpacity={0.7}>
               <Menu size={20} color={colors.textPrimary} />
             </TouchableOpacity>
           )}
@@ -85,7 +83,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           {!isMobile && (
             <View style={styles.liveIndicator}>
               <ShieldCheck size={14} color={colors.success} />
-              <Text style={styles.liveText}>SSL Secured</Text>
+              <Text style={styles.liveText}>Neon SSL</Text>
             </View>
           )}
 
@@ -111,8 +109,8 @@ export const TopBar: React.FC<TopBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: 64,
-    backgroundColor: colors.backgroundSecondary,
+    height: 60,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     flexDirection: 'row',
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.base,
     fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
-    letterSpacing: -0.2,
+    letterSpacing: -0.3,
   },
   subtitle: {
     color: colors.textTertiary,
@@ -158,7 +156,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm + 2,
     borderRadius: radii.full,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: colors.border,
     gap: 4,
   },
   currencyFlag: {
@@ -174,15 +172,17 @@ const styles = StyleSheet.create({
   currencySymbol: {
     color: colors.primary,
     fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
+    fontWeight: typography.weights.bold,
     fontFamily: typography.fontFamily,
   },
   autoPill: {
-    backgroundColor: 'rgba(16, 185, 129, 0.18)',
+    backgroundColor: colors.successBg,
     paddingHorizontal: 5,
     paddingVertical: 1,
     borderRadius: radii.full,
     marginLeft: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(5, 150, 105, 0.2)',
   },
   autoPillText: {
     color: colors.success,
@@ -198,22 +198,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm + 2,
     borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.border,
   },
   landingBtnText: {
     color: colors.textSecondary,
     fontSize: typography.sizes.xs,
     fontFamily: typography.fontFamily,
     marginLeft: 6,
-    fontWeight: typography.weights.medium,
+    fontWeight: typography.weights.semibold,
   },
   liveIndicator: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.successLight,
+    backgroundColor: colors.successBg,
     paddingVertical: 4,
     paddingHorizontal: spacing.sm,
     borderRadius: radii.full,
+    borderWidth: 1,
+    borderColor: 'rgba(5, 150, 105, 0.2)',
   },
   liveText: {
     color: colors.success,
