@@ -287,19 +287,19 @@ export const HrScreen: React.FC = () => {
       >
         <Input
           label="Start Date (YYYY-MM-DD) *"
-          placeholder="2026-10-01"
+          placeholder="Start Date (YYYY-MM-DD)"
           value={leaveStart}
           onChangeText={setLeaveStart}
         />
         <Input
           label="End Date (YYYY-MM-DD) *"
-          placeholder="2026-10-05"
+          placeholder="End Date (YYYY-MM-DD)"
           value={leaveEnd}
           onChangeText={setLeaveEnd}
         />
         <Input
           label="Reason for Leave"
-          placeholder="e.g. Annual Vacation & Family Commitment"
+          placeholder="Enter Reason for Leave"
           value={leaveReason}
           onChangeText={setLeaveReason}
         />

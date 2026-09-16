@@ -298,7 +298,7 @@ export const SettingsScreen: React.FC = () => {
       >
         <Input
           label="Work Email *"
-          placeholder="colleague@enterprise.com"
+          placeholder="Enter Colleague's Email Address"
           value={inviteEmail}
           onChangeText={setInviteEmail}
           keyboardType="email-address"

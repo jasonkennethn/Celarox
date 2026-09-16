@@ -157,20 +157,20 @@ export const DocumentsScreen: React.FC = () => {
       >
         <Input
           label="Document Title *"
-          placeholder="e.g. Master Services Agreement 2026"
+          placeholder="Enter Document Title"
           value={docTitle}
           onChangeText={setDocTitle}
         />
         <Input
           label="File or Cloudinary / Drive Asset URL *"
-          placeholder="https://res.cloudinary.com/p5m9cgbu/raw/upload/..."
+          placeholder="Enter File URL or Cloud Storage Link"
           value={docUrl}
           onChangeText={setDocUrl}
           autoCapitalize="none"
         />
         <Input
           label="Tags (comma separated)"
-          placeholder="legal, compliance, tier-1"
+          placeholder="Enter Tags (e.g. Legal, Compliance, Operations)"
           value={docTags}
           onChangeText={setDocTags}
         />

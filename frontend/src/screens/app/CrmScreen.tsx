@@ -148,7 +148,7 @@ export const CrmScreen: React.FC = () => {
           <View style={styles.searchBox}>
             <Search size={14} color={colors.textTertiary} />
             <TextInput
-              placeholder="Search CRM..."
+              placeholder="Search Deals, Contacts, or Accounts..."
               placeholderTextColor={colors.textTertiary}
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -281,27 +281,27 @@ export const CrmScreen: React.FC = () => {
       >
         <Input
           label="Deal Title *"
-          placeholder="e.g. Enterprise Cloud Modernization"
+          placeholder="Enter Opportunity / Deal Title"
           value={dealTitle}
           onChangeText={setDealTitle}
         />
         <Input
           label="Value Amount ($ USD) *"
-          placeholder="50000"
+          placeholder="Enter Deal Value (e.g. 0.00)"
           value={dealAmount}
           onChangeText={setDealAmount}
           keyboardType="numeric"
         />
         <Input
           label="Win Probability (0-100%)"
-          placeholder="60"
+          placeholder="Enter Win Probability (0 - 100%)"
           value={dealProb}
           onChangeText={setDealProb}
           keyboardType="numeric"
         />
         <Input
           label="Strategic Notes"
-          placeholder="Client is reviewing procurement schedule by end of quarter..."
+          placeholder="Enter Strategic Notes, Procurement Timeline, or Criteria..."
           value={dealNotes}
           onChangeText={setDealNotes}
           multiline

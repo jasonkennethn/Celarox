@@ -199,13 +199,13 @@ export const WorkflowsScreen: React.FC = () => {
       >
         <Input
           label="Automation Name *"
-          placeholder="e.g. Notify Execs on Closed Won Deal"
+          placeholder="Enter Automation Workflow Name"
           value={ruleTitle}
           onChangeText={setRuleTitle}
         />
         <Input
           label="Trigger Event (e.g. deal.won, invoice.paid, task.completed)"
-          placeholder="deal.won"
+          placeholder="Enter Trigger Event (e.g. deal.won, invoice.paid)"
           value={triggerEvent}
           onChangeText={setTriggerEvent}
         />

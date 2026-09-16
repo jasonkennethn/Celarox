@@ -79,7 +79,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         <View style={styles.form}>
           <Input
             label="Corporate Email"
-            placeholder="jason@company.com"
+            placeholder="Enter Your Email"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -89,7 +89,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
 
           <Input
             label="Password"
-            placeholder="••••••••••••"
+            placeholder="Enter Your Password"
             value={password}
             onChangeText={setPassword}
             secureTextEntry

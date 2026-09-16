@@ -76,7 +76,7 @@ export const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({
           <View style={styles.form}>
             <Input
               label="Registered Corporate Email"
-              placeholder="jason@company.com"
+              placeholder="Enter Your Email"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"

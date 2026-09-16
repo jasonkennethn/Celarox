@@ -592,13 +592,13 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
               <View style={styles.contactForm}>
                 <Input
                   label="Full Name *"
-                  placeholder="Jason Kenneth"
+                  placeholder="First Name & Last Name"
                   value={contactName}
                   onChangeText={setContactName}
                 />
                 <Input
                   label="Business Email *"
-                  placeholder="jason@company.com"
+                  placeholder="Enter Your Email"
                   value={contactEmail}
                   onChangeText={setContactEmail}
                   keyboardType="email-address"
@@ -606,19 +606,19 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
                 />
                 <Input
                   label="Company / Organization"
-                  placeholder="Acme Global Inc."
+                  placeholder="Enter Organization / Company Name"
                   value={contactCompany}
                   onChangeText={setContactCompany}
                 />
                 <Input
                   label="Inquiry Subject"
-                  placeholder="Enterprise Plan & Migration"
+                  placeholder="Enter Inquiry Subject"
                   value={contactSubject}
                   onChangeText={setContactSubject}
                 />
                 <Input
                   label="Your Message *"
-                  placeholder="Describe your organization's needs and current software stack..."
+                  placeholder="Enter Details of Your Inquiry, Technical Requirements, or RFP..."
                   value={contactMessage}
                   onChangeText={setContactMessage}
                   multiline

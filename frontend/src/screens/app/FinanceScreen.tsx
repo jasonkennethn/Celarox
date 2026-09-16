@@ -377,7 +377,7 @@ export const FinanceScreen: React.FC = () => {
           <View style={styles.inputCol}>
             <Input
               label="Client Company Name *"
-              placeholder="Vertex Autonomous Corp"
+              placeholder="Enter Client Company Name"
               value={clientName}
               onChangeText={setClientName}
             />
@@ -385,7 +385,7 @@ export const FinanceScreen: React.FC = () => {
           <View style={styles.inputCol}>
             <Input
               label="Billing Email Address *"
-              placeholder="billing@vertex.com"
+              placeholder="Enter Billing Email Address"
               value={clientEmail}
               onChangeText={setClientEmail}
               keyboardType="email-address"
@@ -395,7 +395,7 @@ export const FinanceScreen: React.FC = () => {
 
         <Input
           label="Payment Due Date (YYYY-MM-DD)"
-          placeholder="2026-10-15"
+          placeholder="Enter Due Date (YYYY-MM-DD)"
           value={dueDate}
           onChangeText={setDueDate}
         />
@@ -406,14 +406,14 @@ export const FinanceScreen: React.FC = () => {
           <View key={idx} style={styles.lineItemRow}>
             <View style={{ flex: 3, marginRight: spacing.sm }}>
               <Input
-                placeholder="Description"
+                placeholder="Enter Deliverable Description"
                 value={it.description}
                 onChangeText={(val) => updateItemRow(idx, 'description', val)}
               />
             </View>
             <View style={{ flex: 1, marginRight: spacing.sm }}>
               <Input
-                placeholder="Qty"
+                placeholder="Quantity"
                 value={String(it.quantity)}
                 keyboardType="numeric"
                 onChangeText={(val) => updateItemRow(idx, 'quantity', parseFloat(val) || 1)}
@@ -421,7 +421,7 @@ export const FinanceScreen: React.FC = () => {
             </View>
             <View style={{ flex: 1.5, marginRight: spacing.sm }}>
               <Input
-                placeholder="Unit Price"
+                placeholder="Unit Price (0.00)"
                 value={String(it.unit_price)}
                 keyboardType="numeric"
                 onChangeText={(val) => updateItemRow(idx, 'unit_price', parseFloat(val) || 0)}
@@ -473,13 +473,13 @@ export const FinanceScreen: React.FC = () => {
       >
         <Input
           label="Expense Title *"
-          placeholder="e.g. AWS Cloud Cluster & SRE Subscriptions"
+          placeholder="Enter Expense Title"
           value={expenseTitle}
           onChangeText={setExpenseTitle}
         />
         <Input
           label="Amount ($ USD) *"
-          placeholder="2400"
+          placeholder="Enter Amount (e.g. 0.00)"
           value={expenseAmount}
           onChangeText={setExpenseAmount}
           keyboardType="numeric"

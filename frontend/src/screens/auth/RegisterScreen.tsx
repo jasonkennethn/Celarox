@@ -91,7 +91,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
             <View style={{ flex: 1, marginRight: spacing.sm }}>
               <Input
                 label="First Name *"
-                placeholder="Jason"
+                placeholder="First Name"
                 value={firstName}
                 onChangeText={setFirstName}
                 icon={<User size={16} color={colors.textTertiary} />}
@@ -100,7 +100,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
             <View style={{ flex: 1 }}>
               <Input
                 label="Last Name *"
-                placeholder="Kenneth"
+                placeholder="Last Name"
                 value={lastName}
                 onChangeText={setLastName}
               />
@@ -109,7 +109,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
           <Input
             label="Corporate Email *"
-            placeholder="jason@company.com"
+            placeholder="Enter Your Email"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -119,7 +119,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
           <Input
             label="Company / Workspace Name"
-            placeholder="Acme Global Technologies"
+            placeholder="Enter Organization / Company Name"
             value={companyName}
             onChangeText={setCompanyName}
             icon={<Building size={16} color={colors.textTertiary} />}
@@ -127,7 +127,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
           <Input
             label="Master Password (min 8 chars) *"
-            placeholder="••••••••••••"
+            placeholder="Enter Your Password"
             value={password}
             onChangeText={setPassword}
             secureTextEntry

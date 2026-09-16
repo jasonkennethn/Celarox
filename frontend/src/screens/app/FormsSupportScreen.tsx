@@ -256,26 +256,26 @@ export const FormsSupportScreen: React.FC = () => {
       >
         <Input
           label="Subject *"
-          placeholder="e.g. Invoicing Webhook Integration Question"
+          placeholder="Enter Ticket Subject"
           value={ticketSubject}
           onChangeText={setTicketSubject}
         />
         <Input
           label="Customer Name"
-          placeholder="Client Contact Name"
+          placeholder="First Name & Last Name"
           value={customerName}
           onChangeText={setCustomerName}
         />
         <Input
           label="Customer Email *"
-          placeholder="client@enterprise.com"
+          placeholder="Enter Customer Email"
           value={customerEmail}
           onChangeText={setCustomerEmail}
           keyboardType="email-address"
         />
         <Input
           label="Issue Description"
-          placeholder="Detail the issue or inquiry..."
+          placeholder="Enter Detailed Description of Issue or Inquiry..."
           value={ticketDesc}
           onChangeText={setTicketDesc}
           multiline
@@ -300,13 +300,13 @@ export const FormsSupportScreen: React.FC = () => {
       >
         <Input
           label="Form Title *"
-          placeholder="e.g. Enterprise Client Onboarding Questionnaire"
+          placeholder="Enter Web Form Title"
           value={formTitle}
           onChangeText={setFormTitle}
         />
         <Input
           label="Custom URL Slug (optional)"
-          placeholder="client-onboarding"
+          placeholder="Enter Custom URL Slug (e.g. client-onboarding)"
           value={formSlug}
           onChangeText={setFormSlug}
         />

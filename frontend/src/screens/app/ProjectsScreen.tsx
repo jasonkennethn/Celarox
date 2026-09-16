@@ -166,7 +166,7 @@ export const ProjectsScreen: React.FC = () => {
           <View style={styles.searchBox}>
             <Search size={14} color={colors.textTertiary} />
             <TextInput
-              placeholder="Search tasks..."
+              placeholder="Search Tasks by Title or Keyword..."
               placeholderTextColor={colors.textTertiary}
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -298,13 +298,13 @@ export const ProjectsScreen: React.FC = () => {
       >
         <Input
           label="Task Title *"
-          placeholder="e.g. Audit Neon DB SSL Pool Configuration"
+          placeholder="Enter Task Title"
           value={taskTitle}
           onChangeText={setTaskTitle}
         />
         <Input
           label="Task Description"
-          placeholder="Include technical specs, test criteria, and dependencies..."
+          placeholder="Enter Task Description, Technical Specs, or Criteria..."
           value={taskDescription}
           onChangeText={setTaskDescription}
           multiline
@@ -330,13 +330,13 @@ export const ProjectsScreen: React.FC = () => {
       >
         <Input
           label="Project Title *"
-          placeholder="e.g. Platform Scalability & SRE 2026"
+          placeholder="Enter Project Title"
           value={projectTitle}
           onChangeText={setProjectTitle}
         />
         <Input
           label="Total Budget ($ USD)"
-          placeholder="75000"
+          placeholder="Enter Total Budget (e.g. 0.00)"
           value={projectBudget}
           onChangeText={setProjectBudget}
           keyboardType="numeric"
