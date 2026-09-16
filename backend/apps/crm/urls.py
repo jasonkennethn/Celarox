@@ -10,6 +10,7 @@ from .views import (
 
 router = DefaultRouter()
 router.register(r'companies', CompanyViewSet, basename='crm_companies')
+router.register(r'accounts', CompanyViewSet, basename='crm_accounts')
 router.register(r'contacts', ContactViewSet, basename='crm_contacts')
 router.register(r'pipelines', PipelineViewSet, basename='crm_pipelines')
 router.register(r'deals', DealViewSet, basename='crm_deals')

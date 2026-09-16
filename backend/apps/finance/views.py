@@ -164,6 +164,21 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         serializer.save(workspace_id=ws_id)
 
 
+class PaymentTransactionViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PaymentTransactionSerializer
+
+    def get_queryset(self):
+        ws_id = get_user_workspace_id(self.request)
+        if not ws_id:
+            return PaymentTransaction.objects.none()
+        return PaymentTransaction.objects.filter(workspace_id=ws_id).select_related('invoice')
+
+    def perform_create(self, serializer):
+        ws_id = get_user_workspace_id(self.request)
+        serializer.save(workspace_id=ws_id)
+
+
 class FinanceOverviewViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 

@@ -7,6 +7,7 @@ from django.urls import path, include
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from apps.integrations.views import ContactInquiryView
 
 
 @api_view(['GET'])
@@ -33,4 +34,7 @@ urlpatterns = [
     path('api/hr/', include('apps.hr.urls')),
     path('api/forms/', include('apps.forms_support.urls')),
     path('api/analytics/', include('apps.analytics.urls')),
+    path('api/integrations/', include('apps.integrations.urls')),
+    path('api/public/contact/', ContactInquiryView.as_view(), name='root_public_contact'),
+    path('api/contact/', ContactInquiryView.as_view(), name='root_contact'),
 ]
