@@ -26,11 +26,13 @@ import { Card, Button, Badge, Modal, Input, EmptyState } from '../../components/
 import { api } from '../../api/endpoints';
 import { Deal, Contact, Account, DealStage } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency } from '../../context/CurrencyContext';
 
 export const CrmScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const toast = useToast();
+  const { formatAmount, currentCurrency } = useCurrency();
 
   const [activeTab, setActiveTab] = useState<'pipeline' | 'contacts' | 'accounts'>('pipeline');
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -183,7 +185,7 @@ export const CrmScreen: React.FC = () => {
                     <Text style={styles.columnTitle}>{stg.label}</Text>
                     <Badge label={String(stageDeals.length)} variant="neutral" size="sm" />
                   </View>
-                  <Text style={styles.columnTotal}>${totalStageValue.toLocaleString()}</Text>
+                  <Text style={styles.columnTotal}>{formatAmount(totalStageValue)}</Text>
                 </View>
 
                 <View style={styles.dealCardsContainer}>
@@ -195,7 +197,7 @@ export const CrmScreen: React.FC = () => {
                     stageDeals.map((deal) => (
                       <Card key={deal.id} style={styles.dealCard} padding="md">
                         <Text style={styles.dealCardTitle}>{deal.title}</Text>
-                        <Text style={styles.dealCardAmount}>${Number(deal.amount).toLocaleString()} USD</Text>
+                        <Text style={styles.dealCardAmount}>{formatAmount(deal.amount)}</Text>
                         {deal.contact_name ? (
                           <Text style={styles.dealCardContact}>Contact: {deal.contact_name}</Text>
                         ) : null}

@@ -27,6 +27,7 @@ import { Card, MetricCard, Badge, Button, EmptyState } from '../../components/co
 import { api } from '../../api/endpoints';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency } from '../../context/CurrencyContext';
 import { NavScreen } from '../../components/layout/Sidebar';
 
 interface DashboardScreenProps {
@@ -38,6 +39,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
   const isDesktop = width >= 1024;
   const isTablet = width >= 700 && width < 1024;
   const { user, activeWorkspace } = useAuth();
+  const { formatAmount } = useCurrency();
   const toast = useToast();
 
   const [stats, setStats] = useState<any>({
@@ -122,14 +124,14 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
       <View style={styles.metricsGrid}>
         <MetricCard
           title="Monthly Recurring Revenue"
-          value={`$${Number(stats.mrr).toLocaleString()}`}
+          value={formatAmount(stats.mrr, { compact: true })}
           change={stats.mrr_change}
           changePeriod="vs last month"
           icon={<DollarSign size={18} color={colors.success} />}
         />
         <MetricCard
           title="Active Deal Pipeline"
-          value={`$${Number(stats.deals_pipeline_value).toLocaleString()}`}
+          value={formatAmount(stats.deals_pipeline_value, { compact: true })}
           change={8.5}
           changePeriod={`${stats.active_deals_count} active opportunities`}
           icon={<Users size={18} color={colors.primary} />}
@@ -142,8 +144,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
         />
         <MetricCard
           title="Receivables Due"
-          value={`$${Number(stats.unpaid_invoices_amount).toLocaleString()}`}
-          changePeriod="3 invoices pending collection"
+          value={formatAmount(stats.unpaid_invoices_amount, { compact: true })}
+          changePeriod="Invoices pending collection"
           icon={<Receipt size={18} color={colors.warning} />}
         />
       </View>
@@ -171,7 +173,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                   <Text style={styles.dealSub}>Stage: Proposal Sent • 80% Win Rate</Text>
                 </View>
                 <View style={styles.dealRight}>
-                  <Text style={styles.dealAmount}>$120,000</Text>
+                  <Text style={styles.dealAmount}>{formatAmount(120000)}</Text>
                   <Badge label="Proposal" variant="primary" size="sm" />
                 </View>
               </View>
@@ -181,7 +183,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                   <Text style={styles.dealSub}>Stage: Negotiation • 70% Win Rate</Text>
                 </View>
                 <View style={styles.dealRight}>
-                  <Text style={styles.dealAmount}>$65,000</Text>
+                  <Text style={styles.dealAmount}>{formatAmount(65000)}</Text>
                   <Badge label="Negotiation" variant="warning" size="sm" />
                 </View>
               </View>
@@ -191,7 +193,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                   <Text style={styles.dealSub}>Stage: Closed Won • 100% Win Rate</Text>
                 </View>
                 <View style={styles.dealRight}>
-                  <Text style={styles.dealAmount}>$210,000</Text>
+                  <Text style={styles.dealAmount}>{formatAmount(210000)}</Text>
                   <Badge label="Closed Won" variant="success" size="sm" />
                 </View>
               </View>
@@ -204,7 +206,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                   <Text style={styles.dealSub}>Stage: {deal.stage} • {deal.probability}%</Text>
                 </View>
                 <View style={styles.dealRight}>
-                  <Text style={styles.dealAmount}>${Number(deal.amount).toLocaleString()}</Text>
+                  <Text style={styles.dealAmount}>{formatAmount(deal.amount)}</Text>
                   <Badge label={deal.stage} variant="primary" size="sm" />
                 </View>
               </View>

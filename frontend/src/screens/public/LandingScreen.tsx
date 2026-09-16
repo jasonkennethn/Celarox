@@ -31,9 +31,10 @@ import {
   ChevronRight,
 } from 'lucide-react-native';
 import { colors, radii, spacing, typography, shadows } from '../../theme';
-import { Button, Card, Badge, Input } from '../../components/common';
+import { Button, Card, Badge, Input, CurrencyModal } from '../../components/common';
 import { api } from '../../api/endpoints';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency } from '../../context/CurrencyContext';
 
 interface LandingScreenProps {
   onGoToAuth: (mode: 'login' | 'register') => void;
@@ -50,6 +51,8 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
   const isDesktop = width >= 960;
   const isTablet = width >= 640 && width < 960;
   const toast = useToast();
+  const { currentCurrency, formatAmount, isAutoMode } = useCurrency();
+  const [currencyModalOpen, setCurrencyModalOpen] = useState(false);
 
   // Interactive App Showcase Tab
   const [activeTab, setActiveTab] = useState<'crm' | 'finance' | 'projects' | 'workflows'>('crm');
@@ -160,6 +163,22 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
         </View>
 
         <View style={styles.navActions}>
+          {/* Currency Pill */}
+          <TouchableOpacity
+            onPress={() => setCurrencyModalOpen(true)}
+            style={styles.currencyTopBtn}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.currencyTopFlag}>{currentCurrency.flag}</Text>
+            <Text style={styles.currencyTopCode}>{currentCurrency.code}</Text>
+            <Text style={styles.currencyTopSymbol}>({currentCurrency.symbol})</Text>
+            {isAutoMode && (
+              <View style={styles.currencyAutoTag}>
+                <Text style={styles.currencyAutoTagText}>AUTO</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => onGoToAuth('login')} style={styles.navLink}>
             <Text style={styles.navLinkText}>Sign In</Text>
           </TouchableOpacity>
@@ -262,32 +281,32 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
             <View>
               <View style={styles.previewHeader}>
                 <Text style={styles.previewTitle}>Executive Deal Pipeline</Text>
-                <Badge label="Total Pipeline: $485,000" variant="success" />
+                <Badge label={`Total Pipeline: ${formatAmount(485000)}`} variant="success" />
               </View>
               <View style={[styles.stageGrid, { flexDirection: isDesktop ? 'row' : 'column' }]}>
                 <View style={styles.stageColumn}>
                   <Text style={styles.stageTitle}>QUALIFIED (4)</Text>
                   <View style={styles.stageCard}>
                     <Text style={styles.stageCardTitle}>Acme Global Enterprise</Text>
-                    <Text style={styles.stageCardValue}>$120,000 • 80% Prob</Text>
+                    <Text style={styles.stageCardValue}>{formatAmount(120000)} • 80% Prob</Text>
                   </View>
                   <View style={styles.stageCard}>
                     <Text style={styles.stageCardTitle}>Starlight Robotics</Text>
-                    <Text style={styles.stageCardValue}>$65,000 • 70% Prob</Text>
+                    <Text style={styles.stageCardValue}>{formatAmount(65000)} • 70% Prob</Text>
                   </View>
                 </View>
                 <View style={styles.stageColumn}>
                   <Text style={styles.stageTitle}>PROPOSAL SENT (3)</Text>
                   <View style={styles.stageCard}>
                     <Text style={styles.stageCardTitle}>Apex FinTech Core</Text>
-                    <Text style={styles.stageCardValue}>$210,000 • 90% Prob</Text>
+                    <Text style={styles.stageCardValue}>{formatAmount(210000)} • 90% Prob</Text>
                   </View>
                 </View>
                 <View style={styles.stageColumn}>
                   <Text style={styles.stageTitle}>CLOSED WON (8)</Text>
                   <View style={[styles.stageCard, { borderColor: 'rgba(16, 185, 129, 0.3)' }]}>
                     <Text style={styles.stageCardTitle}>Helios Dynamics</Text>
-                    <Text style={[styles.stageCardValue, { color: colors.success }]}>$90,000 • Paid</Text>
+                    <Text style={[styles.stageCardValue, { color: colors.success }]}>{formatAmount(90000)} • Paid</Text>
                   </View>
                 </View>
               </View>
@@ -311,7 +330,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
                 </View>
                 <View style={styles.invoiceDemoRow}>
                   <Text style={styles.invoiceDemoLabel}>Total Due:</Text>
-                  <Text style={[styles.invoiceDemoValue, { color: colors.success, fontWeight: '700' }]}>$48,500.00 USD</Text>
+                  <Text style={[styles.invoiceDemoValue, { color: colors.success, fontWeight: '700' }]}>{formatAmount(48500)}</Text>
                 </View>
               </View>
             </View>
@@ -383,7 +402,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
           {/* Starter */}
           <Card style={styles.pricingCard} padding="xl">
             <Text style={styles.planName}>Starter</Text>
-            <Text style={styles.planPrice}>$49<Text style={styles.planPeriod}> / month</Text></Text>
+            <Text style={styles.planPrice}>{formatAmount(49, { showDecimals: false })}<Text style={styles.planPeriod}> / month</Text></Text>
             <Text style={styles.planDesc}>Ideal for growing startups and agile teams.</Text>
             <View style={styles.planFeatures}>
               <Text style={styles.planFeatureItem}>✓ Up to 5 Team Members</Text>
@@ -398,7 +417,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
           <Card style={[styles.pricingCard, styles.pricingCardFeatured]} padding="xl">
             <Badge label="MOST POPULAR" variant="primary" style={{ marginBottom: spacing.sm }} />
             <Text style={styles.planName}>Growth</Text>
-            <Text style={styles.planPrice}>$149<Text style={styles.planPeriod}> / month</Text></Text>
+            <Text style={styles.planPrice}>{formatAmount(149, { showDecimals: false })}<Text style={styles.planPeriod}> / month</Text></Text>
             <Text style={styles.planDesc}>For scaling enterprises with custom automation needs.</Text>
             <View style={styles.planFeatures}>
               <Text style={styles.planFeatureItem}>✓ Up to 25 Team Members</Text>
@@ -413,7 +432,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
           {/* Enterprise */}
           <Card style={styles.pricingCard} padding="xl">
             <Text style={styles.planName}>Enterprise</Text>
-            <Text style={styles.planPrice}>$399<Text style={styles.planPeriod}> / month</Text></Text>
+            <Text style={styles.planPrice}>{formatAmount(399, { showDecimals: false })}<Text style={styles.planPeriod}> / month</Text></Text>
             <Text style={styles.planDesc}>Dedicated infrastructure and bespoke integrations.</Text>
             <View style={styles.planFeatures}>
               <Text style={styles.planFeatureItem}>✓ Unlimited Team Members</Text>
@@ -535,6 +554,11 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
           © 2026 Celarox Enterprise Inc. All rights reserved. Version 1.0.
         </Text>
       </View>
+
+      <CurrencyModal
+        visible={currencyModalOpen}
+        onClose={() => setCurrencyModalOpen(false)}
+      />
     </ScrollView>
   );
 };
@@ -586,6 +610,44 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.base,
+  },
+  currencyTopBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: radii.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  currencyTopFlag: {
+    fontSize: 14,
+  },
+  currencyTopCode: {
+    color: colors.textPrimary,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
+  currencyTopSymbol: {
+    color: colors.textSecondary,
+    fontSize: 11,
+    fontFamily: typography.fontFamily,
+  },
+  currencyAutoTag: {
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: radii.sm,
+    marginLeft: 2,
+  },
+  currencyAutoTagText: {
+    color: colors.success,
+    fontSize: 9,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
   },
   navLink: {
     paddingVertical: 8,

@@ -29,11 +29,13 @@ import { Card, Button, Badge, Modal, Input, EmptyState } from '../../components/
 import { api } from '../../api/endpoints';
 import { Invoice, ClientBillingProfile, Expense, InvoiceStatus } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency } from '../../context/CurrencyContext';
 
 export const FinanceScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const toast = useToast();
+  const { formatAmount, currentCurrency } = useCurrency();
 
   const [activeTab, setActiveTab] = useState<'invoices' | 'expenses' | 'clients'>('invoices');
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -286,7 +288,7 @@ export const FinanceScreen: React.FC = () => {
 
                 <View style={styles.invoiceCardRight}>
                   <Text style={styles.invoiceTotal}>
-                    ${Number(inv.total_amount).toLocaleString()} {inv.currency}
+                    {formatAmount(inv.total_amount)}
                   </Text>
                   <View style={styles.invoiceActionBtns}>
                     <TouchableOpacity
@@ -330,7 +332,7 @@ export const FinanceScreen: React.FC = () => {
                   <Text style={styles.invoiceClient}>Category: {exp.category} • Date: {exp.date}</Text>
                 </View>
                 <Text style={[styles.invoiceTotal, { color: colors.danger }]}>
-                  -${Number(exp.amount).toLocaleString()} {exp.currency}
+                  -{formatAmount(exp.amount)}
                 </Text>
               </Card>
             ))
@@ -443,12 +445,12 @@ export const FinanceScreen: React.FC = () => {
         <View style={styles.totalsBox}>
           <View style={styles.totalsRow}>
             <Text style={styles.totalsLabel}>Subtotal:</Text>
-            <Text style={styles.totalsVal}>${subtotal.toLocaleString()} USD</Text>
+            <Text style={styles.totalsVal}>{formatAmount(subtotal)}</Text>
           </View>
           <View style={styles.totalsRow}>
             <Text style={styles.totalsLabel}>Total Due:</Text>
             <Text style={[styles.totalsVal, { color: colors.success, fontWeight: '700' }]}>
-              ${calculatedTotal.toLocaleString()} USD
+              {formatAmount(calculatedTotal)}
             </Text>
           </View>
         </View>

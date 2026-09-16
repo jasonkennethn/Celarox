@@ -24,11 +24,13 @@ import { Card, Button, Badge, Modal, Input, EmptyState } from '../../components/
 import { api } from '../../api/endpoints';
 import { Project, Task, TaskStatus, TaskPriority } from '../../types';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency } from '../../context/CurrencyContext';
 
 export const ProjectsScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const toast = useToast();
+  const { formatAmount } = useCurrency();
 
   const [activeTab, setActiveTab] = useState<'tasks' | 'projects'>('tasks');
   const [projects, setProjects] = useState<Project[]>([]);
@@ -264,7 +266,7 @@ export const ProjectsScreen: React.FC = () => {
                   <View>
                     <Text style={styles.projectTitle}>{proj.title}</Text>
                     <Text style={styles.projectBudget}>
-                      Budget: ${Number(proj.budget).toLocaleString()} {proj.currency}
+                      Budget: {formatAmount(proj.budget)}
                     </Text>
                   </View>
                   <Badge label={proj.status} variant="success" />

@@ -22,19 +22,21 @@ import {
 import { colors, radii, spacing, typography } from '../../theme';
 import { Card, Button, Badge } from '../../components/common';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency } from '../../context/CurrencyContext';
 
 export const AnalyticsScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const isTablet = width >= 768 && width < 1024;
   const toast = useToast();
+  const { formatAmount } = useCurrency();
 
   const [timeframe, setTimeframe] = useState<'7D' | '30D' | '90D' | '1Y'>('30D');
 
   const metrics = [
     {
       title: 'Net ARR Growth',
-      value: '$248,500',
+      value: formatAmount(248500, { compact: true }),
       change: '+18.4%',
       trend: 'up',
       subtitle: 'vs prior 30-day baseline',
@@ -42,7 +44,7 @@ export const AnalyticsScreen: React.FC = () => {
     },
     {
       title: 'Sales Pipeline Velocity',
-      value: '$1,420,000',
+      value: formatAmount(1420000, { compact: true }),
       change: '+24.1%',
       trend: 'up',
       subtitle: '8 active enterprise proposals',
@@ -53,7 +55,7 @@ export const AnalyticsScreen: React.FC = () => {
       value: '96.2%',
       change: '+3.5%',
       trend: 'up',
-      subtitle: '$148,200 settled this month',
+      subtitle: `${formatAmount(148200, { compact: true })} settled this month`,
       icon: <TrendingUp size={20} color={colors.success} />,
     },
     {
@@ -67,10 +69,10 @@ export const AnalyticsScreen: React.FC = () => {
   ];
 
   const breakdownData = [
-    { label: 'Cloud Infrastructure & SRE', amount: '$42,300', percent: '38%', color: colors.primary },
-    { label: 'Enterprise Software Licenses', amount: '$31,500', percent: '28%', color: '#8B5CF6' },
-    { label: 'Personnel & Payroll Operations', amount: '$24,200', percent: '22%', color: colors.info },
-    { label: 'Marketing & Outbound Growth', amount: '$13,400', percent: '12%', color: colors.warning },
+    { label: 'Cloud Infrastructure & SRE', amount: formatAmount(42300), percent: '38%', color: colors.primary },
+    { label: 'Enterprise Software Licenses', amount: formatAmount(31500), percent: '28%', color: '#8B5CF6' },
+    { label: 'Personnel & Payroll Operations', amount: formatAmount(24200), percent: '22%', color: colors.info },
+    { label: 'Marketing & Outbound Growth', amount: formatAmount(13400), percent: '12%', color: colors.warning },
   ];
 
   const funnelStages = [

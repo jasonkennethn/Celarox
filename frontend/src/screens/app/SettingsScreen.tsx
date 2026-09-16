@@ -21,11 +21,15 @@ import {
   Trash2,
   CheckCircle2,
   LogOut,
+  Globe,
+  Coins,
+  Sparkles,
 } from 'lucide-react-native';
 import { colors, radii, spacing, typography } from '../../theme';
 import { Card, Button, Badge, Modal, Input } from '../../components/common';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { useCurrency, SUPPORTED_CURRENCIES } from '../../context/CurrencyContext';
 import { api } from '../../api/endpoints';
 import { WorkspaceMember } from '../../types';
 
@@ -33,6 +37,14 @@ export const SettingsScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const { user, currentWorkspace, logout } = useAuth();
+  const {
+    currentCurrency,
+    currencyCode,
+    isAutoMode,
+    detectedCurrencyCode,
+    setCurrency,
+    setAutoMode,
+  } = useCurrency();
   const toast = useToast();
 
   const [members, setMembers] = useState<WorkspaceMember[]>([]);
@@ -162,6 +174,81 @@ export const SettingsScreen: React.FC = () => {
               <Badge label={m.role.toUpperCase()} variant={m.role === 'owner' ? 'primary' : 'neutral'} size="sm" />
             </View>
           ))}
+        </View>
+      </Card>
+
+      {/* Regional & Currency Preferences */}
+      <Card style={styles.sectionCard} padding="lg">
+        <View style={styles.sectionHeaderRow}>
+          <View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <Coins size={20} color={colors.primary} />
+              <Text style={styles.cardTitle}>Global Currency & Regional Display</Text>
+            </View>
+            <Text style={styles.cardSub}>
+              Switch between automatic region-based localization and manual global currency selection.
+            </Text>
+          </View>
+          <Badge
+            label={isAutoMode ? 'Auto-Detect: Active' : 'Manual Override'}
+            variant={isAutoMode ? 'success' : 'primary'}
+            size="sm"
+          />
+        </View>
+
+        {/* Auto Detect Toggle Banner */}
+        <TouchableOpacity
+          style={[styles.autoDetectBanner, isAutoMode && styles.autoDetectBannerActive]}
+          onPress={() => {
+            setAutoMode(!isAutoMode);
+            toast.info(
+              isAutoMode ? 'Manual Currency Selected' : 'Auto Region Currency Enabled',
+              isAutoMode
+                ? `Using ${currentCurrency.code} as manual preference.`
+                : `Detected regional currency: ${detectedCurrencyCode}`
+            );
+          }}
+          activeOpacity={0.8}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.sm, flex: 1 }}>
+            <Globe size={18} color={isAutoMode ? colors.success : colors.primary} />
+            <View>
+              <Text style={styles.autoDetectTitle}>Automatic Regional Currency Detection</Text>
+              <Text style={styles.autoDetectSub}>
+                Automatically matches your browser timezone & regional locale ({detectedCurrencyCode}).
+              </Text>
+            </View>
+          </View>
+          <View style={[styles.switchTrack, isAutoMode && styles.switchTrackActive]}>
+            <View style={[styles.switchThumb, isAutoMode && styles.switchThumbActive]} />
+          </View>
+        </TouchableOpacity>
+
+        {/* Currency Grid */}
+        <Text style={styles.currencyGridTitle}>AVAILABLE ENTERPRISE CURRENCIES</Text>
+        <View style={styles.currencyGrid}>
+          {Object.values(SUPPORTED_CURRENCIES).map((curr) => {
+            const isSelected = currencyCode === curr.code;
+            return (
+              <TouchableOpacity
+                key={curr.code}
+                style={[styles.currCard, isSelected && styles.currCardSelected]}
+                onPress={() => {
+                  setCurrency(curr.code);
+                  toast.success('Currency Updated', `Active display currency set to ${curr.code} (${curr.symbol})`);
+                }}
+                activeOpacity={0.7}
+              >
+                <View style={styles.currCardTop}>
+                  <Text style={styles.currFlag}>{curr.flag}</Text>
+                  {isSelected && <CheckCircle2 size={16} color={colors.primary} />}
+                </View>
+                <Text style={styles.currCode}>{curr.code}</Text>
+                <Text style={styles.currSymbol}>{curr.symbol} • {curr.name}</Text>
+                <Text style={styles.currRate}>1 USD = {curr.rate} {curr.code}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </Card>
 
@@ -361,5 +448,105 @@ const styles = StyleSheet.create({
   actionRow: {
     marginTop: spacing.lg,
     flexDirection: 'row',
+  },
+  autoDetectBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(99, 102, 241, 0.06)',
+    borderRadius: radii.xl,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(99, 102, 241, 0.2)',
+    marginBottom: spacing.lg,
+  },
+  autoDetectBannerActive: {
+    backgroundColor: 'rgba(16, 185, 129, 0.08)',
+    borderColor: 'rgba(16, 185, 129, 0.3)',
+  },
+  autoDetectTitle: {
+    color: colors.textPrimary,
+    fontSize: typography.sizes.sm,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
+  autoDetectSub: {
+    color: colors.textSecondary,
+    fontSize: typography.sizes.xs,
+    fontFamily: typography.fontFamily,
+    marginTop: 2,
+  },
+  switchTrack: {
+    width: 44,
+    height: 24,
+    borderRadius: radii.full,
+    backgroundColor: colors.backgroundTertiary,
+    padding: 2,
+    justifyContent: 'center',
+  },
+  switchTrackActive: {
+    backgroundColor: colors.success,
+  },
+  switchThumb: {
+    width: 20,
+    height: 20,
+    borderRadius: radii.full,
+    backgroundColor: '#FFFFFF',
+  },
+  switchThumbActive: {
+    transform: [{ translateX: 20 }],
+  },
+  currencyGridTitle: {
+    color: colors.textTertiary,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+    letterSpacing: 0.5,
+    marginBottom: spacing.md,
+  },
+  currencyGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  currCard: {
+    width: '31.5%',
+    minWidth: 130,
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: radii.lg,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+  },
+  currCardSelected: {
+    borderColor: colors.primary,
+    backgroundColor: 'rgba(99, 102, 241, 0.12)',
+  },
+  currCardTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.xs,
+  },
+  currFlag: {
+    fontSize: 20,
+  },
+  currCode: {
+    color: colors.textPrimary,
+    fontSize: typography.sizes.sm,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
+  currSymbol: {
+    color: colors.textSecondary,
+    fontSize: typography.sizes.xs,
+    fontFamily: typography.fontFamily,
+    marginTop: 1,
+  },
+  currRate: {
+    color: colors.textTertiary,
+    fontSize: 10,
+    fontFamily: typography.fontFamily,
+    marginTop: 4,
   },
 });

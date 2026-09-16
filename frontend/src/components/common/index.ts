@@ -6,3 +6,4 @@ export * from './Modal';
 export * from './MetricCard';
 export * from './EmptyState';
 export * from './LoadingScreen';
+export * from './CurrencyModal';

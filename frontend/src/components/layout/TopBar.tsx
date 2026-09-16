@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,12 @@ import {
   Platform,
   useWindowDimensions,
 } from 'react-native';
-import { Menu, Plus, Bell, Search, Globe, ShieldCheck } from 'lucide-react-native';
+import { Menu, Plus, Globe, ShieldCheck, ChevronDown, Coins } from 'lucide-react-native';
 import { colors, radii, spacing, typography } from '../../theme';
 import { Button } from '../common/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useCurrency } from '../../context/CurrencyContext';
+import { CurrencyModal } from '../common/CurrencyModal';
 
 interface TopBarProps {
   title: string;
@@ -31,50 +33,79 @@ export const TopBar: React.FC<TopBarProps> = ({
 }) => {
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
+  const isTablet = width >= 768 && width < 1024;
   const { activeWorkspace } = useAuth();
+  const { currentCurrency, isAutoMode } = useCurrency();
+  const [currencyModalOpen, setCurrencyModalOpen] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.leftSection}>
-        {isMobile && onToggleSidebar && (
-          <TouchableOpacity onPress={onToggleSidebar} style={styles.menuBtn}>
-            <Menu size={20} color={colors.textPrimary} />
-          </TouchableOpacity>
-        )}
-        <View style={styles.titleWrapper}>
-          <Text style={styles.title}>{title}</Text>
-          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+    <>
+      <View style={styles.container}>
+        <View style={styles.leftSection}>
+          {isMobile && onToggleSidebar && (
+            <TouchableOpacity onPress={onToggleSidebar} style={styles.menuBtn}>
+              <Menu size={20} color={colors.textPrimary} />
+            </TouchableOpacity>
+          )}
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>{title}</Text>
+            {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.rightSection}>
-        {onViewLanding && !isMobile && (
+        <View style={styles.rightSection}>
+          {/* Currency Switcher Pill */}
           <TouchableOpacity
-            onPress={onViewLanding}
-            style={styles.landingBtn}
-            activeOpacity={0.8}
+            style={styles.currencyPill}
+            activeOpacity={0.75}
+            onPress={() => setCurrencyModalOpen(true)}
           >
-            <Globe size={14} color={colors.textSecondary} />
-            <Text style={styles.landingBtnText}>Public Website</Text>
+            <Text style={styles.currencyFlag}>{currentCurrency.flag}</Text>
+            <Text style={styles.currencyCode}>{currentCurrency.code}</Text>
+            <Text style={styles.currencySymbol}>({currentCurrency.symbol})</Text>
+            {isAutoMode && (
+              <View style={styles.autoPill}>
+                <Text style={styles.autoPillText}>AUTO</Text>
+              </View>
+            )}
+            <ChevronDown size={12} color={colors.textTertiary} />
           </TouchableOpacity>
-        )}
 
-        <View style={styles.liveIndicator}>
-          <ShieldCheck size={14} color={colors.success} />
-          {!isMobile && <Text style={styles.liveText}>Enterprise Cloud v1.0</Text>}
+          {onViewLanding && !isMobile && !isTablet && (
+            <TouchableOpacity
+              onPress={onViewLanding}
+              style={styles.landingBtn}
+              activeOpacity={0.8}
+            >
+              <Globe size={14} color={colors.textSecondary} />
+              <Text style={styles.landingBtnText}>Public Website</Text>
+            </TouchableOpacity>
+          )}
+
+          {!isMobile && (
+            <View style={styles.liveIndicator}>
+              <ShieldCheck size={14} color={colors.success} />
+              <Text style={styles.liveText}>SSL Secured</Text>
+            </View>
+          )}
+
+          {onQuickAction && (
+            <Button
+              title={quickActionLabel}
+              onPress={onQuickAction}
+              size="sm"
+              variant="primary"
+              icon={<Plus size={14} color="#FFFFFF" />}
+            />
+          )}
         </View>
-
-        {onQuickAction && (
-          <Button
-            title={quickActionLabel}
-            onPress={onQuickAction}
-            size="sm"
-            variant="primary"
-            icon={<Plus size={14} color="#FFFFFF" />}
-          />
-        )}
       </View>
-    </View>
+
+      <CurrencyModal
+        visible={currencyModalOpen}
+        onClose={() => setCurrencyModalOpen(false)}
+      />
+    </>
   );
 };
 
@@ -119,6 +150,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
   },
+  currencyPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.backgroundTertiary,
+    paddingVertical: 5,
+    paddingHorizontal: spacing.sm + 2,
+    borderRadius: radii.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    gap: 4,
+  },
+  currencyFlag: {
+    fontSize: 13,
+    marginRight: 2,
+  },
+  currencyCode: {
+    color: colors.textPrimary,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
+  currencySymbol: {
+    color: colors.primary,
+    fontSize: typography.sizes.xs,
+    fontWeight: typography.weights.semibold,
+    fontFamily: typography.fontFamily,
+  },
+  autoPill: {
+    backgroundColor: 'rgba(16, 185, 129, 0.18)',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: radii.full,
+    marginLeft: 2,
+  },
+  autoPillText: {
+    color: colors.success,
+    fontSize: 8,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
   landingBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -128,7 +199,6 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     borderWidth: 1,
     borderColor: colors.borderLight,
-    marginRight: spacing.xs,
   },
   landingBtnText: {
     color: colors.textSecondary,
@@ -144,7 +214,6 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: spacing.sm,
     borderRadius: radii.full,
-    marginRight: spacing.xs,
   },
   liveText: {
     color: colors.success,

@@ -33,6 +33,8 @@ import {
 import { colors, radii, spacing, typography } from './src/theme';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { ToastProvider } from './src/context/ToastContext';
+import { CurrencyProvider, useCurrency } from './src/context/CurrencyContext';
+import { CurrencyModal } from './src/components/common/CurrencyModal';
 
 // Public Screens
 import { LandingScreen } from './src/screens/public/LandingScreen';
@@ -137,9 +139,11 @@ const MainAppNavigator: React.FC = () => {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const { isAuthenticated, isLoading, user, currentWorkspace, logout } = useAuth();
+  const { currentCurrency, isAutoMode } = useCurrency();
 
   const [currentRoute, setCurrentRoute] = useState<Route>('landing');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currencyModalOpen, setCurrencyModalOpen] = useState(false);
 
   // Sync route with web browser URL if on Web
   useEffect(() => {
@@ -372,6 +376,22 @@ const MainAppNavigator: React.FC = () => {
           </View>
 
           <View style={styles.headerRight}>
+            {/* Currency Pill */}
+            <TouchableOpacity
+              onPress={() => setCurrencyModalOpen(true)}
+              style={styles.currencyTopBtn}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.currencyTopFlag}>{currentCurrency.flag}</Text>
+              <Text style={styles.currencyTopCode}>{currentCurrency.code}</Text>
+              <Text style={styles.currencyTopSymbol}>({currentCurrency.symbol})</Text>
+              {isAutoMode && (
+                <View style={styles.currencyAutoTag}>
+                  <Text style={styles.currencyAutoTagText}>AUTO</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() => navigateTo('settings')}
               style={styles.headerPill}
@@ -382,6 +402,12 @@ const MainAppNavigator: React.FC = () => {
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Currency Modal */}
+        <CurrencyModal
+          visible={currencyModalOpen}
+          onClose={() => setCurrencyModalOpen(false)}
+        />
 
         {/* Mobile Dropdown Nav Menu */}
         {!isDesktop && mobileMenuOpen && (
@@ -425,9 +451,11 @@ const MainAppNavigator: React.FC = () => {
 export default function App() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <MainAppNavigator />
-      </ToastProvider>
+      <CurrencyProvider>
+        <ToastProvider>
+          <MainAppNavigator />
+        </ToastProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }
@@ -595,6 +623,46 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: spacing.sm,
+  },
+  currencyTopBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.backgroundTertiary,
+    paddingVertical: 5,
+    paddingHorizontal: spacing.sm + 2,
+    borderRadius: radii.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    gap: 4,
+  },
+  currencyTopFlag: {
+    fontSize: 12,
+  },
+  currencyTopCode: {
+    color: colors.textPrimary,
+    fontSize: 11,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
+  },
+  currencyTopSymbol: {
+    color: colors.primary,
+    fontSize: 11,
+    fontWeight: typography.weights.semibold,
+    fontFamily: typography.fontFamily,
+  },
+  currencyAutoTag: {
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: radii.full,
+    marginLeft: 2,
+  },
+  currencyAutoTagText: {
+    color: colors.success,
+    fontSize: 8,
+    fontWeight: typography.weights.bold,
+    fontFamily: typography.fontFamily,
   },
   headerPill: {
     flexDirection: 'row',
